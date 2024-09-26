@@ -34,6 +34,15 @@ export default function TabLayout() {
             ),
           }}
         />
+        <Tabs.Screen
+          name='register'
+          options={{
+            title: 'Register',
+            tabBarIcon: ({ color, focused }) => (
+              <TabBarIcon name={focused ? 'person-add' : 'person-add-outline'} color={color} />
+            ),
+          }}
+        />
       </Tabs>
     </>
   );
