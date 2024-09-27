@@ -1,24 +1,28 @@
-import { Button, StyleSheet, FlatList, View } from 'react-native';
+import { StyleSheet, FlatList, View, Alert, Button } from 'react-native';
 import { ThemedText } from './ThemedText';
 import { ThemedView } from './ThemedView';
 import { Controller, useForm } from 'react-hook-form';
 import { ThemedTextInput } from './ThemedTextInput';
-
-type IForm = {
-  username: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-};
+import { useMutation } from '@tanstack/react-query';
+import Api from '../utils/Api';
+import { TRegisterUser } from '../types/userTypes';
+import useAuthApi from '../hooks/useAuthApi';
 
 export default function RegisterForm() {
+  const { registerMutation, loginMutation } = useAuthApi();
+
   const {
     control,
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<IForm>({
-    defaultValues: { username: '', email: '', password: '', confirmPassword: '' },
+  } = useForm<TRegisterUser>({
+    defaultValues: {
+      username: 'emilys',
+      email: 'emily.johnson@x.dummyjson.com',
+      password: 'emilyspass',
+      confirmPassword: 'emilyspass',
+    },
   });
 
   const fields = [
@@ -61,17 +65,19 @@ export default function RegisterForm() {
     },
   ];
 
+  const submit = (data: TRegisterUser) => registerMutation.mutate(data);
+
   const renderItem = ({ item }: { item: (typeof fields)[0] }) => (
     <Controller
       control={control}
-      name={item.name as keyof IForm}
+      name={item.name as keyof TRegisterUser}
       rules={item.rules}
       render={({ field }) => (
         <ThemedTextInput
           {...field}
           placeholder={item.placeholder}
           secureTextEntry={item.secureTextEntry}
-          error={errors[item.name as keyof IForm]?.message}
+          error={errors[item.name as keyof TRegisterUser]?.message}
         />
       )}
     />
@@ -89,7 +95,11 @@ export default function RegisterForm() {
           keyExtractor={item => item.name}
           contentContainerStyle={styles.list}
         />
-        <Button title='Register' onPress={handleSubmit(console.log)} />
+        <Button
+          title='Register'
+          onPress={handleSubmit(submit)}
+          disabled={registerMutation.isPending || loginMutation.isPending}
+        />
       </View>
     </ThemedView>
   );
@@ -108,5 +118,11 @@ const styles = StyleSheet.create({
   list: {
     width: '100%',
     gap: 20,
+  },
+  button: {
+    backgroundColor: 'rgb(0, 45, 227)',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 10,
   },
 });
