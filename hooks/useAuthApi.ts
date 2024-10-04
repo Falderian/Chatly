@@ -9,6 +9,17 @@ const useAuthApi = () => {
 
   const handleError = (error: any, action: string) => Alert.alert('Error', error?.message || `${action} failed`);
 
+  const registerMutation = useMutation({
+    mutationFn: Api.users.register,
+    onSuccess: (_, variables) => {
+      Alert.alert('Success', 'Registration successful');
+      console.log('Registration successful, logging in now');
+
+      loginMutation.mutate({ username: variables.username, password: variables.password });
+    },
+    onError: error => handleError(error, 'Registration'),
+  });
+
   const loginMutation = useMutation({
     mutationFn: Api.users.login,
     onSuccess: async response => {
@@ -21,15 +32,6 @@ const useAuthApi = () => {
       setUser(data);
     },
     onError: error => handleError(error, 'Login'),
-  });
-
-  const registerMutation = useMutation({
-    mutationFn: Api.users.register,
-    onSuccess: (_, variables) => {
-      Alert.alert('Success', 'Registration successful');
-      loginMutation.mutate({ username: variables.username, password: variables.password });
-    },
-    onError: error => handleError(error, 'Registration'),
   });
 
   return { registerMutation, loginMutation };

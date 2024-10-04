@@ -20,8 +20,8 @@ export default function RegisterForm() {
     defaultValues: {
       username: 'emilys',
       email: 'emily.johnson@x.dummyjson.com',
-      password: 'emilyspass',
-      confirmPassword: 'emilyspass',
+      password: '123ASDasd123!',
+      confirmPassword: '123ASDasd123!',
     },
   });
 
