@@ -35,6 +35,7 @@ class ApiUrls {
   static users = {
     register: this.authRoot + 'register',
     login: this.authRoot + 'login',
+    search: this.usersRoot + 'name/',
   };
 
   static chatsRoot = 'conversations/';
@@ -60,6 +61,8 @@ class Users {
   };
 
   find = async (id: string) => (await api.get(ApiUrls.usersRoot + id)).data;
+
+  search = async (username: string) => (await api.get(ApiUrls.users.search + username)).data;
 }
 
 class Chats {

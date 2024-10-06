@@ -8,3 +8,5 @@ const Chat = (id: number) => {
     </View>
   );
 };
+
+export default Chat;
