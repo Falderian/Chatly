@@ -2,48 +2,33 @@ import { Tabs } from 'expo-router';
 import React from 'react';
 
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
-import Header from '../../components/Header';
+import { useThemeColors } from '../../hooks/useThemeColors';
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
+  const [tabBarActiveTintColor, tabBarInactiveBackgroundColor, tabBarActiveBackgroundColor] = useThemeColors([
+    'gradient1',
+    'background',
+    'secondaryBackground',
+  ]);
 
   return (
-    <>
-      <Header />
-      <Tabs
-        screenOptions={{
-          tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-          headerShown: false,
+    <Tabs
+      screenOptions={{
+        tabBarActiveTintColor,
+        tabBarInactiveBackgroundColor,
+        tabBarActiveBackgroundColor,
+        headerShown: false,
+      }}
+    >
+      <Tabs.Screen
+        name='index'
+        options={{
+          title: 'Chats',
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon name={focused ? 'chatbubbles' : 'chatbubbles-outline'} color={color} />
+          ),
         }}
-      >
-        <Tabs.Screen
-          name='index'
-          options={{
-            title: 'Home',
-            tabBarIcon: ({ color, focused }) => <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />,
-          }}
-        />
-        <Tabs.Screen
-          name='explore'
-          options={{
-            title: 'Explore',
-            tabBarIcon: ({ color, focused }) => (
-              <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
-            ),
-          }}
-        />
-        <Tabs.Screen
-          name='register'
-          options={{
-            title: 'Register',
-            tabBarIcon: ({ color, focused }) => (
-              <TabBarIcon name={focused ? 'person-add' : 'person-add-outline'} color={color} />
-            ),
-          }}
-        />
-      </Tabs>
-    </>
+      />
+    </Tabs>
   );
 }

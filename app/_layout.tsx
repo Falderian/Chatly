@@ -11,7 +11,6 @@ import { AuthProvider } from '../contexts/AuthContext';
 
 const queryClient = new QueryClient();
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
@@ -35,8 +34,7 @@ export default function RootLayout() {
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
-          <Stack>
-            <Stack.Screen name='(tabs)' options={{ headerShown: false }} />
+          <Stack screenOptions={{ headerShown: false }}>
             <Stack.Screen name='+not-found' />
           </Stack>
         </AuthProvider>

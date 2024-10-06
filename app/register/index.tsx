@@ -1,9 +1,8 @@
-import { StyleSheet, useColorScheme } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { ThemedView } from '../../components/ThemedView';
 import RegisterForm from '../../components/RegisterForm';
 
 const RegisterScreen = () => {
-  const mode = useColorScheme();
   return (
     <ThemedView style={styles.container}>
       <RegisterForm />

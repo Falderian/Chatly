@@ -1,11 +1,14 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useMutation } from '@tanstack/react-query';
 import { Alert } from 'react-native';
-import Api from '../utils/Api';
-import { useAuth } from '../contexts/AuthContext';
+import Api from '../../utils/Api';
+import { useAuth } from '../../contexts/AuthContext';
+import { useRouter } from 'expo-router';
+import Storage from '../../utils/Storage';
 
 const useAuthApi = () => {
   const { setUser } = useAuth();
+  const router = useRouter();
 
   const handleError = (error: any, action: string) => Alert.alert('Error', error?.message || `${action} failed`);
 
@@ -22,14 +25,12 @@ const useAuthApi = () => {
 
   const loginMutation = useMutation({
     mutationFn: Api.users.login,
-    onSuccess: async response => {
-      const data = await response.json();
-      await AsyncStorage.setItem('accessToken', data.accessToken);
-      await AsyncStorage.setItem('refreshToken', data.refreshToken);
-
+    onSuccess: async data => {
       delete data.accessToken;
       delete data.refreshToken;
       setUser(data);
+
+      router.replace('/');
     },
     onError: error => handleError(error, 'Login'),
   });

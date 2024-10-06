@@ -1,5 +1,8 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useContext, useEffect } from 'react';
 import { TUser } from '../types/userTypes';
+import { useRouter } from 'expo-router';
+import Storage from '../utils/Storage';
+import useUserApi from '../hooks/Api/useUserApi';
 
 type AuthContextType = {
   user: TUser | null;
@@ -18,9 +21,23 @@ export const useAuth = () => {
 };
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+  const router = useRouter();
   const [user, setUser] = useState<TUser | null>(null);
 
-  const logout = () => setUser(null);
+  const { getUser } = useUserApi();
+
+  const logout = () => {
+    setUser(null);
+    router.push('/login');
+  };
+
+  useEffect(() => {
+    if (!user)
+      Storage.getItem('id').then(async id => {
+        if (!id) router.push('/login');
+        else setUser(await getUser(id));
+      });
+  }, []);
 
   return <AuthContext.Provider value={{ user, setUser, logout }}>{children}</AuthContext.Provider>;
 };

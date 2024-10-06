@@ -15,7 +15,7 @@ const common = {
 export const Colors = {
   light: {
     text: 'rgb(27, 43, 72)',
-    background: common.white,
+    background: 'rgb(248, 247, 250)',
     tint: 'rgb(0, 45, 227)',
     icon: 'rgb(164, 164, 164)',
     tabIconDefault: 'rgb(164, 164, 164)',
@@ -23,7 +23,7 @@ export const Colors = {
     pressed: 'rgb(0, 26, 131)',
     secondaryText: 'rgb(164, 164, 164)',
     disabled: 'rgb(173, 181, 189)',
-    secondaryBackground: 'rgb(247, 247, 252)',
+    secondaryBackground: common.white,
     gradient1: 'rgb(135, 159, 255)',
     gradient2: 'rgb(210, 213, 249)',
     ...common,
