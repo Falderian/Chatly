@@ -47,15 +47,15 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderWidth: 0.2,
-    borderRadius: 4,
-    minHeight: 36,
-    paddingHorizontal: 8,
+    width: '100%',
   },
   input: {
     flex: 1,
     fontSize: 16,
-    paddingLeft: 30,
+    minHeight: 32,
+    paddingLeft: 35,
+    borderRadius: 8,
+    borderWidth: 0,
   },
   icon: {
     position: 'absolute',

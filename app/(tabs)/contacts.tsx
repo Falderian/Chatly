@@ -3,19 +3,21 @@ import { ThemedView } from '../../components/ThemedView';
 import Search from '../../components/Search';
 import useUserApi from '../../hooks/Api/useUserApi';
 import { ThemedText } from '../../components/ThemedText';
-import Avatar from 'react-avatar';
 import UserAvatar from '../../components/Avatar';
-import Icon from '../../components/Icon';
+import { useThemeColors } from '../../hooks/useThemeColors';
 
 const ContactsScreen = () => {
   const { searchUsers } = useUserApi();
+  const [borderColor] = useThemeColors(['secondaryBackground']);
 
-  const renderUser = ({ item }: { item: { username: string; id: string } }) => {
+  const renderUser = ({ item }: { item: { username: string; id: string; lastActivity: string } }) => {
     return (
-      <View style={styles.userProfile}>
-        <UserAvatar username={item.username} />
-        <ThemedText>{item.username}</ThemedText>
-        <Icon name='new-message' />
+      <View style={[styles.userProfile, { borderColor }]}>
+        <UserAvatar />
+        <View>
+          <ThemedText type='defaultSemiBold'>{item.username}</ThemedText>
+          <ThemedText style={{ fontSize: 14 }}>{new Date(item.lastActivity).toLocaleString()}</ThemedText>
+        </View>
       </View>
     );
   };
@@ -38,14 +40,16 @@ const styles = StyleSheet.create({
   },
   usersContainer: {
     display: 'flex',
-    gap: 4,
+    gap: 8,
     paddingBottom: 20,
   },
   userProfile: {
     display: 'flex',
     flexDirection: 'row',
     gap: 8,
+    paddingBottom: 4,
     alignItems: 'center',
+    borderBottomWidth: 2,
   },
 });
 

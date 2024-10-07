@@ -6,6 +6,7 @@ import { FieldValues, useForm } from 'react-hook-form';
 import useAuthApi from '../hooks/Api/useAuthApi';
 import { TLoginUser } from '../types/userTypes';
 import { Link } from 'expo-router';
+import LoginLogo from './svg/LoginLogo';
 
 export default function LoginForm() {
   const { control, handleSubmit } = useForm<FieldValues>({
@@ -49,7 +50,7 @@ export default function LoginForm() {
 
   return (
     <ThemedView style={styles.container}>
-      <ThemedText type='title' style={styles.title}>
+      <ThemedText type='subtitle' style={styles.title}>
         Connect easily with your family and friends over countries
       </ThemedText>
       <View style={styles.view}>

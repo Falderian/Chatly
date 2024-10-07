@@ -1,8 +1,10 @@
 import { Entypo } from '@expo/vector-icons';
 import { useThemeColors } from '../hooks/useThemeColors';
-import { IconProps } from '@expo/vector-icons/build/createIconSet';
+import { ComponentProps } from 'react';
 
-const Icon = ({ name }: IconProps<any>) => {
+type EntypoIconProps = ComponentProps<typeof Entypo>;
+
+const Icon = ({ name }: EntypoIconProps) => {
   const [color] = useThemeColors(['text']);
 
   return <Entypo name={name} color={color} size={16} />;

@@ -18,6 +18,7 @@ const areEqual = (prevProps: BottomTabHeaderProps, nextProps: BottomTabHeaderPro
 const styles = StyleSheet.create({
   container: {
     padding: 24,
+    paddingTop: 32,
   },
 });
 

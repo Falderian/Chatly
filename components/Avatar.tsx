@@ -1,5 +1,5 @@
-import Avatar from 'react-avatar';
+import Avatar from '@zamplyy/react-native-nice-avatar';
 
-const UserAvatar = ({ username }: { username: string }) => <Avatar name={username} size='34px' round='10px' />;
+const UserAvatar = () => <Avatar size={40} />;
 
 export default UserAvatar;

@@ -73,7 +73,7 @@ export default function RegisterForm() {
 
   return (
     <ThemedView style={styles.container}>
-      <ThemedText type='title' style={styles.title}>
+      <ThemedText type='subtitle' style={styles.title}>
         Connect easily with your family and friends over countries
       </ThemedText>
       <View style={styles.view}>

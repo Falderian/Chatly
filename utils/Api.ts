@@ -3,7 +3,7 @@ import { TLoginUser, TRegisterUser } from '../types/userTypes';
 import Storage from './Storage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const baseURL = 'http://localhost:1234/';
+const baseURL = 'http://192.168.100.3:1234/';
 
 const api = axios.create({
   baseURL,
@@ -15,17 +15,10 @@ const api = axios.create({
 api.interceptors.request.use(async config => {
   if (config.url && config.url.includes('/auth')) return config;
 
-  try {
-    const token = await AsyncStorage.getItem('access_token');
+  const token = await AsyncStorage.getItem('access_token');
+  console.warn(token);
 
-    if (token) {
-      config.headers['Authorization'] = `Bearer ${token}`;
-    } else {
-      console.warn('Access token is not available in AsyncStorage.');
-    }
-  } catch (error) {
-    console.error('Error retrieving access token from storage:', error);
-  }
+  if (token) config.headers['Authorization'] = `Bearer ${token}`;
 
   return config;
 });
