@@ -104,6 +104,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 24,
     gap: 20,
+    width: '100%',
   },
   title: {
     textAlign: 'center',

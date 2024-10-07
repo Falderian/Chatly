@@ -25,8 +25,7 @@ export default function ChatsScreen() {
         chats.length
       ) : (
         <ThemedView style={styles.container}>
-          <ThemedText>No chats were found. Create a one.</ThemedText>
-          <Search fetch={searchUsers} placeholder='Begin type to find users' noResultsText='No users were found.' />
+          <Search fetch={searchUsers} placeholder='Type to search chats' noResultsText='No chats were found.' />
         </ThemedView>
       )}
     </Loader>
@@ -36,6 +35,9 @@ export default function ChatsScreen() {
 const styles = StyleSheet.create({
   container: {
     display: 'flex',
+    height: '100%',
+    width: '100%',
     gap: 4,
+    paddingHorizontal: 24,
   },
 });

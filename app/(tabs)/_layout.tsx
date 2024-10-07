@@ -3,6 +3,7 @@ import React from 'react';
 
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { useThemeColors } from '../../hooks/useThemeColors';
+import Header from '../../components/Header';
 
 export default function TabLayout() {
   const [tabBarActiveTintColor, tabBarInactiveBackgroundColor, tabBarActiveBackgroundColor] = useThemeColors([
@@ -17,7 +18,9 @@ export default function TabLayout() {
         tabBarActiveTintColor,
         tabBarInactiveBackgroundColor,
         tabBarActiveBackgroundColor,
-        headerShown: false,
+        headerShown: true,
+        header: props => <Header {...props} />,
+        lazy: true,
       }}
     >
       <Tabs.Screen
@@ -27,6 +30,13 @@ export default function TabLayout() {
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon name={focused ? 'chatbubbles' : 'chatbubbles-outline'} color={color} />
           ),
+        }}
+      />
+      <Tabs.Screen
+        name='contacts'
+        options={{
+          title: 'Contacts',
+          tabBarIcon: ({ color, focused }) => <TabBarIcon name={focused ? 'people' : 'people-outline'} color={color} />,
         }}
       />
     </Tabs>

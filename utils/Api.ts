@@ -13,6 +13,8 @@ const api = axios.create({
 });
 
 api.interceptors.request.use(async config => {
+  if (config.url && config.url.includes('/auth')) return config;
+
   try {
     const token = await AsyncStorage.getItem('access_token');
 
