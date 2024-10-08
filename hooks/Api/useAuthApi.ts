@@ -10,7 +10,9 @@ const useAuthApi = () => {
   const { setUser } = useAuth();
   const router = useRouter();
 
-  const handleError = (error: any, action: string) => Alert.alert('Error', error?.message || `${action} failed`);
+  const handleError = (error: any, action: string) => {
+    return error?.message || `${action} failed`;
+  };
 
   const registerMutation = useMutation({
     mutationFn: Api.users.register,

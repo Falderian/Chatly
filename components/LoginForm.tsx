@@ -6,10 +6,9 @@ import { FieldValues, useForm } from 'react-hook-form';
 import useAuthApi from '../hooks/Api/useAuthApi';
 import { TLoginUser } from '../types/userTypes';
 import { Link } from 'expo-router';
-import LoginLogo from './svg/LoginLogo';
 
 export default function LoginForm() {
-  const { control, handleSubmit } = useForm<FieldValues>({
+  const { control, handleSubmit, setError } = useForm<FieldValues>({
     defaultValues: {
       username: 'emilys',
       password: '123ASDasd123!',
@@ -46,7 +45,10 @@ export default function LoginForm() {
     />
   );
 
-  const submit = (data: FieldValues) => loginMutation.mutate(data as TLoginUser);
+  const submit = (data: FieldValues) =>
+    loginMutation
+      .mutateAsync(data as TLoginUser)
+      .catch(e => setError('username', { type: 'manual', message: e.response.data.message }));
 
   return (
     <ThemedView style={styles.container}>
@@ -84,6 +86,7 @@ const styles = StyleSheet.create({
   },
   view: { width: '100%', gap: 40 },
   list: {
+    flex: 1,
     width: '100%',
     gap: 20,
   },

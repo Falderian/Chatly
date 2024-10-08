@@ -27,11 +27,10 @@ export const ThemedTextInput: React.FC<Props> = ({ control, name, rules, ...othe
               {...otherProps}
               style={[{ backgroundColor, color, borderColor: errors[name] ? dangerColor : lineColor }, styles.input]}
             />
-            {errors[name] && (
-              <ThemedText darkColor={dangerColor} lightColor={dangerColor}>
-                <>{errors[name]?.message}</>
-              </ThemedText>
-            )}
+
+            <ThemedText darkColor={dangerColor} lightColor={dangerColor} style={{ height: 10 }}>
+              <>{errors[name]?.message}</>
+            </ThemedText>
           </>
         )}
       />
@@ -45,7 +44,6 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     gap: 4,
-    padding: 4,
   },
   input: {
     borderRadius: 4,

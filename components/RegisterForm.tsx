@@ -111,6 +111,7 @@ const styles = StyleSheet.create({
   },
   view: { width: '100%', gap: 40 },
   list: {
+    minHeight: 270,
     width: '100%',
     gap: 20,
   },
