@@ -18,9 +18,7 @@ export default function TabLayout() {
         tabBarActiveTintColor,
         tabBarInactiveBackgroundColor,
         tabBarActiveBackgroundColor,
-        headerShown: true,
         header: props => <Header {...props} />,
-        lazy: true,
       }}
     >
       <Tabs.Screen

@@ -6,6 +6,7 @@ type TUser = {
   lastName: string;
   gender: string;
   image: string;
+  lastActivity: string;
 };
 
 type TRegisterUser = Pick<TUser, 'username' | 'email'> & {

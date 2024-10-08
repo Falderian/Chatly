@@ -1,10 +1,9 @@
 import { useMutation } from '@tanstack/react-query';
 import Api from '../../utils/Api';
 import { useRouter } from 'expo-router';
+import { TUser } from '../../types/userTypes';
 
 const useUserApi = () => {
-  const router = useRouter();
-
   const getUser = useMutation({
     mutationFn: Api.users.find,
     onError: e => console.log(e),
@@ -15,7 +14,7 @@ const useUserApi = () => {
   });
 
   return {
-    getUser: getUser.mutateAsync,
+    getUser,
     searchUsers,
   };
 };

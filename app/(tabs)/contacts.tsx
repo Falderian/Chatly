@@ -5,20 +5,24 @@ import useUserApi from '../../hooks/Api/useUserApi';
 import { ThemedText } from '../../components/ThemedText';
 import UserAvatar from '../../components/Avatar';
 import { useThemeColors } from '../../hooks/useThemeColors';
+import { Link } from 'expo-router';
+import { TUser } from '../../types/userTypes';
 
 const ContactsScreen = () => {
   const { searchUsers } = useUserApi();
   const [borderColor] = useThemeColors(['secondaryBackground']);
 
-  const renderUser = ({ item }: { item: { username: string; id: string; lastActivity: string } }) => {
+  const renderUser = ({ item }: { item: TUser }) => {
     return (
-      <View style={[styles.userProfile, { borderColor }]}>
+      <Link style={[styles.userProfile, { borderColor }]} href={`/users/profile?id=${item.id}`}>
         <UserAvatar />
         <View>
-          <ThemedText type='defaultSemiBold'>{item.username}</ThemedText>
+          <ThemedText type='defaultSemiBold'>
+            {item.firstName} {item.lastName}
+          </ThemedText>
           <ThemedText style={{ fontSize: 14 }}>{new Date(item.lastActivity).toLocaleString()}</ThemedText>
         </View>
-      </View>
+      </Link>
     );
   };
 

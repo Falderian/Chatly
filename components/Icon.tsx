@@ -1,13 +1,19 @@
-import { Entypo } from '@expo/vector-icons';
-import { useThemeColors } from '../hooks/useThemeColors';
+import React from 'react';
+import { Ionicons } from '@expo/vector-icons';
 import { ComponentProps } from 'react';
+import { useThemeColors } from '../hooks/useThemeColors';
 
-type EntypoIconProps = ComponentProps<typeof Entypo>;
+type IoniconsIconNames = ComponentProps<typeof Ionicons>['name'];
 
-const Icon = ({ name }: EntypoIconProps) => {
-  const [color] = useThemeColors(['text']);
+interface IconProps {
+  name: IoniconsIconNames;
+  size?: number;
+  color?: string;
+}
 
-  return <Entypo name={name} color={color} size={16} />;
+const Icon = ({ name, size = 24, color }: IconProps) => {
+  const [text] = useThemeColors(['text']); // Use the theme's text color as the default
+  return <Ionicons name={name} size={size} color={color || text} />; // Use the passed color or theme color
 };
 
 export default Icon;

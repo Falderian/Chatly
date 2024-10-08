@@ -1,5 +1,7 @@
-import Avatar from '@zamplyy/react-native-nice-avatar';
+import Avatar, { NiceAvatarProps } from '@zamplyy/react-native-nice-avatar';
 
-const UserAvatar = () => <Avatar size={40} />;
+type Props = Omit<NiceAvatarProps, 'size'> & { size?: number };
+
+const UserAvatar = ({ size = 40, ...props }: Props) => <Avatar size={size} {...props} />;
 
 export default UserAvatar;

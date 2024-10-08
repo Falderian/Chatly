@@ -10,19 +10,19 @@ import { Link } from 'expo-router';
 export default function LoginForm() {
   const { control, handleSubmit, setError } = useForm<FieldValues>({
     defaultValues: {
-      username: 'emilys',
-      password: '123ASDasd123!',
+      email: 'Xavier_Tromp@yahoo.com',
+      password: '5Gloria95',
     },
   });
   const { loginMutation } = useAuthApi();
 
   const fields = [
     {
-      name: 'username',
-      placeholder: 'Username',
+      name: 'email',
+      placeholder: 'Email',
       secureTextEntry: false,
       rules: {
-        required: 'Username is required',
+        required: 'Email is required',
       },
     },
     {
@@ -48,7 +48,7 @@ export default function LoginForm() {
   const submit = (data: FieldValues) =>
     loginMutation
       .mutateAsync(data as TLoginUser)
-      .catch(e => setError('username', { type: 'manual', message: e.response.data.message }));
+      .catch(e => setError('email', { type: 'manual', message: e.response.data.message }));
 
   return (
     <ThemedView style={styles.container}>

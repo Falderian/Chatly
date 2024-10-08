@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { TLoginUser, TRegisterUser } from '../types/userTypes';
+import { TLoginUser, TRegisterUser, TUser } from '../types/userTypes';
 import Storage from './Storage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -54,7 +54,7 @@ class Users {
     return response.data;
   };
 
-  find = async (id: string) => (await api.get(ApiUrls.usersRoot + id)).data;
+  find = async (id: string) => (await api.get<TUser>(ApiUrls.usersRoot + id)).data;
 
   search = async (username: string) => (await api.get(ApiUrls.users.search + username)).data;
 }

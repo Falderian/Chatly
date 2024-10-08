@@ -35,11 +35,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     Storage.getItem('access_token').then(v => {
       if (!v) router.push('/login');
     });
-    // if (!user)
-    //   Storage.getItem('id').then(async id => {
-    //     if (!id) router.push('/login');
-    //     else setUser(await getUser(id));
-    //   });
+    if (!user)
+      Storage.getItem('id').then(async id => {
+        if (!id) router.push('/login');
+        else setUser(await getUser.mutateAsync(id));
+      });
   }, []);
 
   return <AuthContext.Provider value={{ user, setUser, logout }}>{children}</AuthContext.Provider>;
