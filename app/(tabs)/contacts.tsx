@@ -38,7 +38,6 @@ const styles = StyleSheet.create({
   container: {
     display: 'flex',
     height: '100%',
-    width: '100%',
     gap: 4,
     paddingHorizontal: 24,
   },

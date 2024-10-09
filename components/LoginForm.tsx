@@ -10,8 +10,8 @@ import { Link } from 'expo-router';
 export default function LoginForm() {
   const { control, handleSubmit, setError } = useForm<FieldValues>({
     defaultValues: {
-      email: 'Xavier_Tromp@yahoo.com',
-      password: '5Gloria95',
+      email: 'Johann.Ebert@Garth.info',
+      password: '2Frederique25',
     },
   });
   const { loginMutation } = useAuthApi();

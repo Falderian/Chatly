@@ -1,12 +1,13 @@
-import { useEffect, useMemo } from 'react';
-import useUserApi from '../../hooks/Api/useUserApi';
 import { useLocalSearchParams } from 'expo-router';
-import { ThemedView } from '../../components/ThemedView';
-import Loader from '../../components/Loader';
-import { StyleSheet, View } from 'react-native';
+import { useEffect, useMemo } from 'react';
+import { View } from 'react-native';
 import UserAvatar from '../../components/Avatar';
-import { ThemedText } from '../../components/ThemedText';
 import Icon from '../../components/Icon';
+import Loader from '../../components/Loader';
+import { ThemedText } from '../../components/ThemedText';
+import { ThemedView } from '../../components/ThemedView';
+import useUserApi from '../../hooks/Api/useUserApi';
+import { StyleSheet } from 'react-native';
 
 const UserProfile = () => {
   const { getUser } = useUserApi();
@@ -18,7 +19,7 @@ const UserProfile = () => {
 
   const user = useMemo(() => getUser.data, [getUser.data]);
 
-  const icons = useMemo(() => ['person-add' as const, 'send' as const], []); // Use valid icon names from TIconNames['name']
+  const icons = useMemo(() => ['person-add' as const, 'send' as const], []);
 
   return (
     <Loader loading={!user}>

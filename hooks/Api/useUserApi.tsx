@@ -1,7 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
 import Api from '../../utils/Api';
-import { useRouter } from 'expo-router';
-import { TUser } from '../../types/userTypes';
 
 const useUserApi = () => {
   const getUser = useMutation({

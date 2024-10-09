@@ -29,7 +29,7 @@ class ApiUrls {
   static users = {
     register: this.authRoot + 'register',
     login: this.authRoot + 'login',
-    search: this.usersRoot + 'name/',
+    search: this.usersRoot + 'search/',
   };
 
   static chatsRoot = 'conversations/';
@@ -56,11 +56,16 @@ class Users {
 
   find = async (id: string) => (await api.get<TUser>(ApiUrls.usersRoot + id)).data;
 
-  search = async (username: string) => (await api.get(ApiUrls.users.search + username)).data;
+  search = async (username: string) => {
+    const response = await api.get(ApiUrls.users.search, {
+      params: { query: username },
+    });
+    return response.data;
+  };
 }
 
 class Chats {
-  getUserChats = async (id: number) => (await api.get(ApiUrls.chats.user + id)).data;
+  getUserChats = async (id: number) => (await api.get(ApiUrls.chats.user)).data;
 }
 
 export default class Api {
