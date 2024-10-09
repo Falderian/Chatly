@@ -65,7 +65,7 @@ class Users {
 }
 
 class Chats {
-  getUserChats = async (id: number) => (await api.get(ApiUrls.chats.user)).data;
+  getUserChats = async (id: number) => (await api.get(ApiUrls.chats.user + id)).data;
 }
 
 export default class Api {

@@ -3,13 +3,13 @@ import React from 'react';
 
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { useThemeColors } from '../../hooks/useThemeColors';
-import Header from '../../components/Header';
 
 export default function TabLayout() {
-  const [tabBarActiveTintColor, tabBarInactiveBackgroundColor, tabBarActiveBackgroundColor] = useThemeColors([
+  const [tabBarActiveTintColor, tabBarInactiveBackgroundColor, tabBarActiveBackgroundColor, text] = useThemeColors([
     'gradient1',
     'background',
     'secondaryBackground',
+    'text',
   ]);
 
   return (
@@ -18,7 +18,15 @@ export default function TabLayout() {
         tabBarActiveTintColor,
         tabBarInactiveBackgroundColor,
         tabBarActiveBackgroundColor,
-        header: props => <Header {...props} />,
+        headerTintColor: text,
+
+        headerStyle: {
+          backgroundColor: tabBarActiveBackgroundColor,
+          borderBottomColor: tabBarActiveBackgroundColor,
+        },
+        tabBarStyle: {
+          borderTopColor: tabBarActiveBackgroundColor,
+        },
       }}
     >
       <Tabs.Screen

@@ -16,7 +16,7 @@ export default function ChatsScreen() {
   const [chats, setChats] = useState<[] | null>(null);
 
   useEffect(() => {
-    if (!chats && user) getUserChats(user?.id).then(({ data }) => setChats(data));
+    if (!chats && user?.id) getUserChats(user.id).then(({ data }) => setChats(data));
   }, [user]);
 
   return (
@@ -39,5 +39,6 @@ const styles = StyleSheet.create({
     width: '100%',
     gap: 4,
     paddingHorizontal: 24,
+    paddingTop: 16,
   },
 });

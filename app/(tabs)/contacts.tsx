@@ -40,6 +40,7 @@ const styles = StyleSheet.create({
     height: '100%',
     gap: 4,
     paddingHorizontal: 24,
+    paddingTop: 16,
   },
   usersContainer: {
     display: 'flex',

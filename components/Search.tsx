@@ -34,9 +34,7 @@ const Search = ({ fetch, noResultsText, ...props }: Props & TextInputProps) => {
           placeholderTextColor={color}
         />
       </View>
-      <Loader loading={fetch.isPending}>
-        {!fetch.data?.length ? <ThemedText>{noResultsText}</ThemedText> : fetch.data.length}
-      </Loader>
+      <Loader loading={fetch.isPending}>{!fetch.data?.length && <ThemedText>{noResultsText}</ThemedText>}</Loader>
     </View>
   );
 };

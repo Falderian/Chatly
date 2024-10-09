@@ -2,7 +2,7 @@ import { useLocalSearchParams } from 'expo-router';
 import { useEffect, useMemo } from 'react';
 import { View } from 'react-native';
 import UserAvatar from '../../components/Avatar';
-import Icon from '../../components/Icon';
+import Icon, { TIconName } from '../../components/Icon';
 import Loader from '../../components/Loader';
 import { ThemedText } from '../../components/ThemedText';
 import { ThemedView } from '../../components/ThemedView';
@@ -19,7 +19,9 @@ const UserProfile = () => {
 
   const user = useMemo(() => getUser.data, [getUser.data]);
 
-  const icons = useMemo(() => ['person-add' as const, 'send' as const], []);
+  const icons: TIconName[] = useMemo(() => ['person-add', 'chatbubble-ellipses'], []);
+
+  if (getUser.data?.isContact) icons.splice(0, 1, 'checkmark-circle-outline');
 
   return (
     <Loader loading={!user}>

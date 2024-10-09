@@ -1,19 +1,13 @@
-import React from 'react';
+import React, { ComponentProps } from 'react';
 import { Ionicons } from '@expo/vector-icons';
-import { ComponentProps } from 'react';
+import { type IconProps } from '@expo/vector-icons/build/createIconSet';
 import { useThemeColors } from '../hooks/useThemeColors';
 
-type IoniconsIconNames = ComponentProps<typeof Ionicons>['name'];
+export type TIconName = ComponentProps<typeof Ionicons>['name'];
 
-interface IconProps {
-  name: IoniconsIconNames;
-  size?: number;
-  color?: string;
-}
-
-const Icon = ({ name, size = 24, color }: IconProps) => {
-  const [text] = useThemeColors(['text']); // Use the theme's text color as the default
-  return <Ionicons name={name} size={size} color={color || text} />; // Use the passed color or theme color
+const Icon = ({ style, ...rest }: IconProps<TIconName>) => {
+  const [text] = useThemeColors(['gradient1']);
+  return <Ionicons color={rest.color || text} {...rest} />;
 };
 
 export default Icon;
