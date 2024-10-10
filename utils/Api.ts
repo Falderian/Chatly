@@ -3,7 +3,7 @@ import { TLoginUser, TRegisterUser, TUser } from '../types/userTypes';
 import Storage from './Storage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const baseURL = 'http://localhost:1234/';
+const baseURL = 'https://chatly-backend-7z2g.onrender.com/';
 
 const api = axios.create({
   baseURL,
