@@ -1,12 +1,13 @@
-import { StyleSheet, useColorScheme } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { ThemedView } from '../../components/ThemedView';
-import RegisterForm from '../../components/RegisterForm';
+import LoginForm from '../../components/LoginForm';
+import LoginLogo from '../../components/svg/LoginLogo';
 
-const RegisterScreen = () => {
-  const mode = useColorScheme();
+const LoginScreen = () => {
   return (
     <ThemedView style={styles.container}>
-      <RegisterForm />
+      <LoginLogo />
+      <LoginForm />
     </ThemedView>
   );
 };
@@ -20,4 +21,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RegisterScreen;
+export default LoginScreen;

@@ -1,43 +1,28 @@
-import { StyleSheet, FlatList, View, Button } from 'react-native';
+import { View, FlatList, Button, StyleSheet } from 'react-native';
 import { ThemedText } from './ThemedText';
 import { ThemedView } from './ThemedView';
-import { useForm, FieldValues } from 'react-hook-form';
 import { ThemedTextInput } from './ThemedTextInput';
-import { TRegisterUser } from '../types/userTypes';
+import { FieldValues, useForm } from 'react-hook-form';
 import useAuthApi from '../hooks/Api/useAuthApi';
+import { TLoginUser } from '../types/userTypes';
 import { Link } from 'expo-router';
 
-export default function RegisterForm() {
-  const { registerMutation, loginMutation } = useAuthApi();
-
-  const { control, handleSubmit, watch } = useForm<FieldValues>({
+export default function LoginForm() {
+  const { control, handleSubmit, setError } = useForm<FieldValues>({
     defaultValues: {
-      username: 'emilys',
-      email: 'emily.johnson@x.dummyjson.com',
-      password: '123ASDasd123!',
-      confirmPassword: '123ASDasd123!',
+      email: 'Xavier_Tromp@yahoo.com',
+      password: '5Gloria95',
     },
   });
+  const { loginMutation } = useAuthApi();
 
   const fields = [
-    {
-      name: 'username',
-      placeholder: 'Username',
-      secureTextEntry: false,
-      rules: {
-        required: 'Username is required',
-      },
-    },
     {
       name: 'email',
       placeholder: 'Email',
       secureTextEntry: false,
       rules: {
         required: 'Email is required',
-        pattern: {
-          value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-          message: 'Invalid email address',
-        },
       },
     },
     {
@@ -48,18 +33,7 @@ export default function RegisterForm() {
         required: 'Password is required',
       },
     },
-    {
-      name: 'confirmPassword',
-      placeholder: 'Confirm Password',
-      secureTextEntry: true,
-      rules: {
-        required: 'You have to confirm your password',
-        validate: (value: string) => value === watch('password') || 'Passwords do not match',
-      },
-    },
   ];
-
-  const submit = (data: FieldValues) => registerMutation.mutate(data as TRegisterUser);
 
   const renderItem = ({ item }: { item: (typeof fields)[0] }) => (
     <ThemedTextInput
@@ -70,6 +44,11 @@ export default function RegisterForm() {
       rules={item.rules}
     />
   );
+
+  const submit = (data: FieldValues) =>
+    loginMutation
+      .mutateAsync(data as TLoginUser)
+      .catch(e => setError('email', { type: 'manual', message: e.response.data.message }));
 
   return (
     <ThemedView style={styles.container}>
@@ -83,17 +62,13 @@ export default function RegisterForm() {
           keyExtractor={item => item.name}
           contentContainerStyle={styles.list}
         />
-        <Button
-          title='Register'
-          onPress={handleSubmit(submit)}
-          disabled={registerMutation.isPending || loginMutation.isPending}
-        />
-        <View style={styles.linkContainer}>
-          <ThemedText type='default'>Already having an account?</ThemedText>
-          <Link href='/login' style={styles.link}>
-            Log in
-          </Link>
-        </View>
+        <Button title='Login' onPress={handleSubmit(submit)} disabled={loginMutation.isPending} />
+      </View>
+      <View style={styles.linkContainer}>
+        <ThemedText type='default'>Not having an account?</ThemedText>
+        <Link href='/register' style={styles.link}>
+          Register a new one
+        </Link>
       </View>
     </ThemedView>
   );
@@ -111,7 +86,7 @@ const styles = StyleSheet.create({
   },
   view: { width: '100%', gap: 40 },
   list: {
-    minHeight: 270,
+    flex: 1,
     width: '100%',
     gap: 20,
   },
@@ -121,7 +96,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderRadius: 10,
   },
-  linkContainer: { display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 4, justifyContent: 'center' },
+  linkContainer: { display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 4 },
   link: {
     color: 'rgb(135, 159, 255)',
     fontSize: 16,

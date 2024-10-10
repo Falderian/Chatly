@@ -1,12 +1,27 @@
-import { ThemedView } from './ThemedView';
+import { StyleSheet } from 'react-native';
 import { ThemedText } from './ThemedText';
+import { ThemedView } from './ThemedView';
+import { BottomTabHeaderProps } from '@react-navigation/bottom-tabs';
+import React from 'react';
 
-const Header = () => {
+const Header = React.memo((props: BottomTabHeaderProps) => {
   return (
-    <ThemedView style={{ paddingTop: 4 }}>
-      <ThemedText style={{ textAlign: 'center' }}>Secured Chat</ThemedText>
+    <ThemedView style={styles.container}>
+      <ThemedText type='subtitle'>{props.options.title}</ThemedText>
     </ThemedView>
   );
-};
+});
 
-export default Header;
+const areEqual = (prevProps: BottomTabHeaderProps, nextProps: BottomTabHeaderProps) =>
+  prevProps.options.title === nextProps.options.title;
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 24,
+    paddingTop: 32,
+  },
+});
+
+const MemoizedHeader = React.memo(Header, areEqual);
+
+export default MemoizedHeader;
