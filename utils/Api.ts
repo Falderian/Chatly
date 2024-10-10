@@ -48,7 +48,7 @@ class Users {
 
     if (access_token) {
       await Storage.setItem('access_token', access_token);
-      await Storage.setItem('id', id);
+      await Storage.setItem('id', id.toString());
     }
 
     return response.data;
@@ -57,9 +57,10 @@ class Users {
   find = async (id: string) => (await api.get<TUser>(ApiUrls.usersRoot + id)).data;
 
   search = async (username: string) => {
-    const response = await api.get(ApiUrls.users.search, {
+    const response = await api.get<TUser[]>(ApiUrls.users.search, {
       params: { query: username },
     });
+
     return response.data;
   };
 }

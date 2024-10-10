@@ -6,7 +6,7 @@ const useChatsApi = () => {
     mutationFn: Api.chats.getUserChats,
   });
 
-  return { getUserChats: getUserChats.mutateAsync };
+  return { getUserChats };
 };
 
 export default useChatsApi;

@@ -77,18 +77,16 @@ export default function LoginForm() {
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
+    justifyContent: 'space-around',
     paddingHorizontal: 24,
     gap: 20,
-    width: '100%',
   },
   title: {
     textAlign: 'center',
   },
   view: { width: '100%', gap: 40 },
   list: {
-    flex: 1,
-    width: '100%',
-    gap: 20,
+    gap: 10,
   },
   button: {
     backgroundColor: 'rgb(0, 45, 227)',
