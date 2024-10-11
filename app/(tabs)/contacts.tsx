@@ -14,8 +14,8 @@ const ContactsScreen = () => {
 
   const renderUser = ({ item }: { item: TUser }) => {
     return (
-      <Link style={[styles.userProfile, { borderColor }]} href={`/users/profile?id=${item.id}`}>
-        <UserAvatar />
+      <Link style={[styles.userProfile, { borderColor }]} href={`/users/profile?id=${item.id}`} key={item.id}>
+        <UserAvatar size={40} title={item.firstName[0] + item.lastName[0]} />
         <View>
           <ThemedText type='defaultSemiBold'>
             {item.firstName} {item.lastName}
@@ -29,6 +29,7 @@ const ContactsScreen = () => {
   return (
     <ThemedView style={styles.container}>
       <Search fetch={searchUsers} placeholder='Type to search users' noResultsText='No contacts, yet.' />
+
       <FlatList data={searchUsers.data} renderItem={renderUser} contentContainerStyle={styles.usersContainer} />
     </ThemedView>
   );
@@ -43,8 +44,6 @@ const styles = StyleSheet.create({
     paddingTop: 16,
   },
   usersContainer: {
-    display: 'flex',
-    gap: 8,
     paddingBottom: 20,
   },
   userProfile: {

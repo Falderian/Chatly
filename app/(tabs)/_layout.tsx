@@ -27,6 +27,7 @@ export default function TabLayout() {
         tabBarStyle: {
           borderTopColor: tabBarActiveBackgroundColor,
         },
+        tabBarLabelStyle: { fontSize: 14 },
       }}
     >
       <Tabs.Screen

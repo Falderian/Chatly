@@ -24,7 +24,7 @@ const Search = ({ fetch, noResultsText, ...props }: Props & TextInputProps) => {
   }, 500);
 
   return (
-    <View>
+    <>
       <View style={[styles.inputContainer, { borderColor }]}>
         <Ionicons name='search' size={20} color={color} style={styles.icon} />
         <TextInput
@@ -35,7 +35,7 @@ const Search = ({ fetch, noResultsText, ...props }: Props & TextInputProps) => {
         />
       </View>
       <Loader loading={fetch.isPending}>{!fetch.data?.length && <ThemedText>{noResultsText}</ThemedText>}</Loader>
-    </View>
+    </>
   );
 };
 
@@ -48,7 +48,6 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   input: {
-    flex: 1,
     fontSize: 16,
     minHeight: 32,
     paddingLeft: 35,

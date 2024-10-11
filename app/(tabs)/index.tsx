@@ -13,21 +13,15 @@ export default function ChatsScreen() {
   const { getUserChats } = useChatsApi();
   const { searchUsers } = useUserApi();
 
-  const [chats, setChats] = useState<[] | null>(null);
-
   useEffect(() => {
-    if (!chats && user?.id) getUserChats(user.id).then(({ data }) => setChats(data));
+    if (user?.id) getUserChats.mutate(user.id);
   }, [user]);
 
   return (
-    <Loader loading={Boolean(chats)}>
-      {chats?.length ? (
-        chats.length
-      ) : (
-        <ThemedView style={styles.container}>
-          <Search fetch={searchUsers} placeholder='Type to search chats' noResultsText='No chats were found.' />
-        </ThemedView>
-      )}
+    <Loader loading={Boolean(getUserChats.isPending)}>
+      <ThemedView style={styles.container}>
+        <Search fetch={searchUsers} placeholder='Type to search chats' noResultsText='No chats were found.' />
+      </ThemedView>
     </Loader>
   );
 }

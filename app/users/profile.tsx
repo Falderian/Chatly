@@ -25,21 +25,23 @@ const UserProfile = () => {
 
   return (
     <Loader loading={!user}>
-      <ThemedView style={styles.container}>
-        <UserAvatar size={150} />
-        <View style={styles.profile}>
-          <ThemedText type='title'>
-            {user?.firstName} {user?.lastName}
-          </ThemedText>
-          <ThemedText type='defaultSemiBold'>{user?.email}</ThemedText>
-          <ThemedText>Last activity: {new Date(user?.lastActivity!).toLocaleString()}</ThemedText>
-        </View>
-        <View style={styles.icons}>
-          {icons.map(name => (
-            <Icon key={name} name={name} size={30} />
-          ))}
-        </View>
-      </ThemedView>
+      {user && (
+        <ThemedView style={styles.container}>
+          <UserAvatar size={150} title={user.firstName[0] + user.lastName[0]} />
+          <View style={styles.profile}>
+            <ThemedText type='title'>
+              {user.firstName} {user.lastName}
+            </ThemedText>
+            <ThemedText type='defaultSemiBold'>{user.email}</ThemedText>
+            <ThemedText>Last activity: {new Date(user.lastActivity!).toLocaleString()}</ThemedText>
+          </View>
+          <View style={styles.icons}>
+            {icons.map(name => (
+              <Icon key={name} name={name} size={30} />
+            ))}
+          </View>
+        </ThemedView>
+      )}
     </Loader>
   );
 };
