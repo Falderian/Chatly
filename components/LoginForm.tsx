@@ -6,6 +6,7 @@ import { FieldValues, useForm } from 'react-hook-form';
 import useAuthApi from '../hooks/Api/useAuthApi';
 import { TLoginUser } from '../types/userTypes';
 import { Link } from 'expo-router';
+import CustomButton from './CustomButton';
 
 export default function LoginForm() {
   const { control, handleSubmit, setError } = useForm<FieldValues>({
@@ -62,7 +63,12 @@ export default function LoginForm() {
           keyExtractor={item => item.name}
           contentContainerStyle={styles.list}
         />
-        <Button title='Login' onPress={handleSubmit(submit)} disabled={loginMutation.isPending} />
+        <CustomButton
+          title='Login'
+          onPress={handleSubmit(submit)}
+          disabled={loginMutation.isPending}
+          loading={loginMutation.isPending}
+        />
       </View>
       <View style={styles.linkContainer}>
         <ThemedText type='default'>Not having an account?</ThemedText>

@@ -2,15 +2,14 @@ import React from 'react';
 import { useTheme } from '@react-navigation/native';
 import { StyleSheet, View } from 'react-native';
 import Svg, { Rect, Path, G, ClipPath, Defs } from 'react-native-svg';
-import { useThemeColors } from '../../hooks/useThemeColors';
+import { useColors } from '../../hooks/useColors';
 
 const LoginLogo = () => {
-  const { dark } = useTheme();
-  const [text, line, gradient1, gradient2] = useThemeColors(['text', 'line', 'gradient1', 'gradient2']);
+  const colors = useColors();
 
-  const colorPrimary = '#375FFF';
-  const colorSecondary = dark ? gradient2 : text;
-  const colorTertiary = dark ? gradient2 : text;
+  const colorPrimary = colors.primary;
+  const colorSecondary = colors.text.default;
+  const colorTertiary = colors.text.default;
 
   return (
     <View style={styles.container}>

@@ -1,41 +1,36 @@
-import { TextInput, TextInputProps, StyleSheet, View } from 'react-native';
-import { useThemeColors } from '../hooks/useThemeColors';
+import { TextInput, TextInputProps, StyleSheet, View, ActivityIndicator } from 'react-native';
+
 import { debounce } from 'lodash';
 import { UseMutationResult } from '@tanstack/react-query';
-import Loader from './Loader';
-import { ThemedText } from './ThemedText';
-import Ionicons from '@expo/vector-icons/Ionicons'; // Import Ionicons from @expo/vector-icons
+import Ionicons from '@expo/vector-icons/Ionicons';
+import { useColors } from '../hooks/useColors';
 
 type Props = {
   fetch: UseMutationResult<any, Error, string, unknown>;
-  noResultsText: string;
 };
 
-const Search = ({ fetch, noResultsText, ...props }: Props & TextInputProps) => {
-  const [backgroundColor, color, borderColor] = useThemeColors([
-    'secondaryBackground' as const,
-    'text' as const,
-    'gradient1' as const,
-  ]);
+const Search = ({ fetch, ...props }: Props & TextInputProps) => {
+  const colors = useColors();
 
-  const hanldeSearch = debounce(async (text: string) => {
+  const handleSearch = debounce(async (text: string) => {
     if (!text) return;
     fetch.mutate(text);
   }, 500);
 
   return (
-    <>
-      <View style={[styles.inputContainer, { borderColor }]}>
-        <Ionicons name='search' size={20} color={color} style={styles.icon} />
-        <TextInput
-          onChangeText={hanldeSearch}
-          style={[{ backgroundColor, color }, styles.input]}
-          {...props}
-          placeholderTextColor={color}
-        />
-      </View>
-      <Loader loading={fetch.isPending}>{!fetch.data?.length && <ThemedText>{noResultsText}</ThemedText>}</Loader>
-    </>
+    <View style={[styles.inputContainer]}>
+      {fetch.isPending ? (
+        <ActivityIndicator size='small' color={colors.primary} style={styles.icon} />
+      ) : (
+        <Ionicons name='search' size={20} color={colors.primary} style={styles.icon} />
+      )}
+      <TextInput
+        onChangeText={handleSearch}
+        style={[{ backgroundColor: colors.background.secondary, color: colors.text.default }, styles.input]}
+        {...props}
+        placeholderTextColor={colors.text.secondary}
+      />
+    </View>
   );
 };
 
@@ -46,6 +41,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     width: '100%',
+    position: 'relative',
   },
   input: {
     fontSize: 16,
@@ -53,6 +49,7 @@ const styles = StyleSheet.create({
     paddingLeft: 35,
     borderRadius: 8,
     borderWidth: 0,
+    flex: 1,
   },
   icon: {
     position: 'absolute',

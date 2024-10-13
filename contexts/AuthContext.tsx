@@ -40,7 +40,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         if (!id) router.push('/login');
         else setUser(await getUser.mutateAsync(id));
       });
-  }, []);
+  }, [Storage.getItem('access_token')]);
 
   return <AuthContext.Provider value={{ user, setUser, logout }}>{children}</AuthContext.Provider>;
 };

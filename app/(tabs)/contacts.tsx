@@ -4,23 +4,26 @@ import Search from '../../components/Search';
 import useUserApi from '../../hooks/Api/useUserApi';
 import { ThemedText } from '../../components/ThemedText';
 import UserAvatar from '../../components/Avatar';
-import { useThemeColors } from '../../hooks/useThemeColors';
+
 import { Link } from 'expo-router';
 import { TUser } from '../../types/userTypes';
+import { useColors } from '../../hooks/useColors';
 
 const ContactsScreen = () => {
   const { searchUsers } = useUserApi();
-  const [borderColor] = useThemeColors(['secondaryBackground']);
+  const borderColor = useColors().background.secondary;
 
   const renderUser = ({ item }: { item: TUser }) => {
     return (
-      <Link style={[styles.userProfile, { borderColor }]} href={`/users/profile?id=${item.id}`} key={item.id}>
-        <UserAvatar size={40} title={item.firstName[0] + item.lastName[0]} />
-        <View>
-          <ThemedText type='defaultSemiBold'>
+      <Link key={item.id} href={`/users/profile?id=${item.id}`} style={[styles.userProfile, { borderColor }]}>
+        <UserAvatar size={80} />
+        <View style={styles.userTexts}>
+          <ThemedText type='subtitle'>
             {item.firstName} {item.lastName}
           </ThemedText>
-          <ThemedText style={{ fontSize: 14 }}>{new Date(item.lastActivity).toLocaleString()}</ThemedText>
+          <ThemedText style={{ fontSize: 14 }}>
+            Last acitivity: {new Date(item.lastActivity).toLocaleString()}
+          </ThemedText>
         </View>
       </Link>
     );
@@ -28,31 +31,25 @@ const ContactsScreen = () => {
 
   return (
     <ThemedView style={styles.container}>
-      <Search fetch={searchUsers} placeholder='Type to search users' noResultsText='No contacts, yet.' />
-
-      <FlatList data={searchUsers.data} renderItem={renderUser} contentContainerStyle={styles.usersContainer} />
+      <Search fetch={searchUsers} placeholder='Type to search users' />
+      <FlatList data={searchUsers.data} renderItem={renderUser} />
     </ThemedView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    display: 'flex',
-    height: '100%',
-    gap: 4,
+    flex: 1,
     paddingHorizontal: 24,
     paddingTop: 16,
-  },
-  usersContainer: {
-    paddingBottom: 20,
+    gap: 8,
   },
   userProfile: {
-    display: 'flex',
-    flexDirection: 'row',
-    gap: 8,
-    paddingBottom: 4,
-    alignItems: 'center',
     borderBottomWidth: 2,
+    paddingVertical: 8,
+  },
+  userTexts: {
+    paddingLeft: 8,
   },
 });
 

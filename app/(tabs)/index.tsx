@@ -20,7 +20,7 @@ export default function ChatsScreen() {
   return (
     <Loader loading={Boolean(getUserChats.isPending)}>
       <ThemedView style={styles.container}>
-        <Search fetch={searchUsers} placeholder='Type to search chats' noResultsText='No chats were found.' />
+        <Search fetch={searchUsers} placeholder='Type to search chats' />
       </ThemedView>
     </Loader>
   );

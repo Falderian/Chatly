@@ -1,7 +1,7 @@
 import { ActivityIndicator, StyleSheet } from 'react-native';
 import { ThemedView } from './ThemedView';
 import { ReactNode } from 'react';
-import { useThemeColors } from '../hooks/useThemeColors';
+import { useColors } from '../hooks/useColors';
 
 type Props = {
   loading: boolean;
@@ -9,7 +9,7 @@ type Props = {
 };
 
 const Loader = ({ loading, children }: Props) => {
-  const [color] = useThemeColors(['gradient1']);
+  const color = useColors().safe;
   return (
     <ThemedView style={styles.container}>
       {loading ? <ActivityIndicator size='large' color={color} /> : children}

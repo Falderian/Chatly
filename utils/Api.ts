@@ -22,6 +22,17 @@ api.interceptors.request.use(async config => {
   return config;
 });
 
+api.interceptors.response.use(
+  response => response,
+  async error => {
+    if (error.response && error.response.status === 401) {
+      await AsyncStorage.removeItem('access_token');
+      await AsyncStorage.removeItem('id');
+    }
+    return Promise.reject(error);
+  },
+);
+
 class ApiUrls {
   static authRoot = 'auth/';
 

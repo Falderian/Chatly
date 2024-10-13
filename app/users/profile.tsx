@@ -27,7 +27,7 @@ const UserProfile = () => {
     <Loader loading={!user}>
       {user && (
         <ThemedView style={styles.container}>
-          <UserAvatar size={150} title={user.firstName[0] + user.lastName[0]} />
+          <UserAvatar size={150} />
           <View style={styles.profile}>
             <ThemedText type='title'>
               {user.firstName} {user.lastName}
@@ -48,19 +48,17 @@ const UserProfile = () => {
 
 const styles = StyleSheet.create({
   container: {
-    display: 'flex',
+    flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
     gap: 24,
   },
   profile: {
-    display: 'flex',
-    gap: 4,
+    gap: 8,
   },
   icons: {
-    display: 'flex',
     flexDirection: 'row',
-    width: '100%',
-    justifyContent: 'space-evenly',
+    gap: 72,
   },
 });
 
