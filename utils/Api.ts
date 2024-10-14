@@ -3,7 +3,7 @@ import { TLoginUser, TRegisterUser, TUser } from '../types/userTypes';
 import Storage from './Storage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const baseURL = 'https://chatly-backend-7z2g.onrender.com/';
+const baseURL = process.env.EXPO_PUBLIC_API_URL;
 
 const api = axios.create({
   baseURL,
@@ -47,6 +47,8 @@ class ApiUrls {
   static chats = {
     user: this.chatsRoot + 'user/',
   };
+
+  static contactsRoot = 'contacts/';
 }
 
 class Users {
@@ -80,7 +82,12 @@ class Chats {
   getUserChats = async (id: number) => (await api.get(ApiUrls.chats.user + id)).data;
 }
 
+class Contacts {
+  createContact = async (data: { userId: number; contactId: number }) =>
+    (await api.post(ApiUrls.contactsRoot, data)).data;
+}
 export default class Api {
   static users = new Users();
   static chats = new Chats();
+  static contacts = new Contacts();
 }

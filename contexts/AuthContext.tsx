@@ -32,14 +32,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   useEffect(() => {
-    Storage.getItem('access_token').then(v => {
+    Storage.getItem('access_token').then(async v => {
       if (!v) router.push('/login');
+      if (!user) {
+        const id = await Storage.getItem('id');
+        setUser(await getUser.mutateAsync(id as string));
+      }
     });
-    if (!user)
-      Storage.getItem('id').then(async id => {
-        if (!id) router.push('/login');
-        else setUser(await getUser.mutateAsync(id));
-      });
   }, [Storage.getItem('access_token')]);
 
   return <AuthContext.Provider value={{ user, setUser, logout }}>{children}</AuthContext.Provider>;
