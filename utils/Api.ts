@@ -85,6 +85,11 @@ class Chats {
 class Contacts {
   createContact = async (data: { userId: number; contactId: number }) =>
     (await api.post(ApiUrls.contactsRoot, data)).data;
+
+  findUserContacs = async (id: number) => (await api.get(ApiUrls.contactsRoot + id)).data;
+
+  deleteUserContact = async (id: number, contactId: number) =>
+    (await api.delete(`${ApiUrls.contactsRoot}${id}/${contactId}`)).data;
 }
 export default class Api {
   static users = new Users();

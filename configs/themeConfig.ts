@@ -10,7 +10,7 @@ export const themeConfig = {
     primary: '#002DE3',
     background: {
       primary: '#FFFFFF',
-      secondary: 'F7F7FC',
+      secondary: '#F7F7FC',
     },
     text: {
       default: '#0F1828',

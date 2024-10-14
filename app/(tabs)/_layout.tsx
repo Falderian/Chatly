@@ -1,8 +1,11 @@
-import { Tabs } from 'expo-router';
+import { router, Stack, Tabs } from 'expo-router';
 import React from 'react';
 
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { useColors } from '../../hooks/useColors';
+import Icon from '../../components/Icon';
+import { Pressable } from 'react-native';
+import BackButton from '../../components/BackButton';
 
 export default function TabLayout() {
   const colors = useColors();
@@ -23,6 +26,7 @@ export default function TabLayout() {
         },
         tabBarLabelStyle: { fontSize: 14, color: colors.text.default },
       }}
+      backBehavior='history'
     >
       <Tabs.Screen
         name='index'
@@ -38,6 +42,22 @@ export default function TabLayout() {
         options={{
           title: 'Contacts',
           tabBarIcon: ({ color, focused }) => <TabBarIcon name={focused ? 'people' : 'people-outline'} color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name='profile'
+        options={{
+          title: 'User Profile',
+          href: null,
+          headerLeft: BackButton,
+        }}
+      />
+
+      <Tabs.Screen
+        name='chat'
+        options={{
+          href: null,
+          headerLeft: BackButton,
         }}
       />
     </Tabs>

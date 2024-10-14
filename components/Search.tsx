@@ -13,8 +13,8 @@ const Search = ({ fetch, ...props }: Props & TextInputProps) => {
   const colors = useColors();
 
   const handleSearch = debounce(async (text: string) => {
-    if (!text) return;
-    fetch.mutate(text);
+    if (!text) fetch.reset();
+    else fetch.mutate(text);
   }, 500);
 
   return (

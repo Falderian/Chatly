@@ -1,14 +1,13 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
 
-import { useColorScheme } from '@/hooks/useColorScheme';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from '../contexts/AuthContext';
 import { useColors } from '../hooks/useColors';
+import { ActivityIndicator } from 'react-native';
 
 const queryClient = new QueryClient();
 
@@ -27,26 +26,13 @@ export default function RootLayout() {
     }
   }, [loaded]);
 
-  if (!loaded) return null;
+  if (!loaded) return <ActivityIndicator color={colors.primary} />;
 
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <Stack screenOptions={{ headerShown: false }}>
+        <Stack screenOptions={{ headerShown: false, headerBackVisible: true }}>
           <Stack.Screen name='+not-found' />
-          <Stack.Screen
-            name='users/profile'
-            options={{
-              headerShown: true,
-              headerTintColor: colors.text.default,
-              headerStyle: {
-                backgroundColor: colors.background.secondary,
-              },
-              headerShadowVisible: false,
-              headerBackVisible: true,
-              title: 'User Profile',
-            }}
-          />
         </Stack>
       </AuthProvider>
     </QueryClientProvider>
