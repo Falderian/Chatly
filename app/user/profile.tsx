@@ -10,39 +10,27 @@ import { StyleSheet } from 'react-native';
 import IconButton from '../../components/IconButton';
 import useContactsApi from '../../hooks/Api/useContactsApi';
 import { useAuth } from '../../contexts/AuthContext';
+import React from 'react';
+import ContactIcon from '../../components/contacts/ContactIcon';
 
-const UserProfile = () => {
+const UserProfile: React.FC = () => {
   const { user } = useAuth();
   const { getUser } = useUserApi();
-  const { createContact, deleteUserContact } = useContactsApi();
-  const profileId = useLocalSearchParams().id;
+  const profileId = useLocalSearchParams().id as string;
 
   useEffect(() => {
-    if (profileId) getUser.mutate(profileId.toString());
-  }, [profileId, createContact.isSuccess, deleteUserContact.isSuccess]);
+    if (profileId) getUser.mutate(profileId);
+  }, [profileId]);
 
   const profile = useMemo(() => getUser.data, [getUser.data]);
 
-  const icons = useMemo(() => {
-    const isContact = getUser.data?.isContact;
-    return [
-      isContact
-        ? {
-            name: 'checkmark-circle-outline' as const,
-            onPress: () => deleteUserContact.mutate([user?.id!, +profileId]),
-            loading: deleteUserContact.isPending,
-          }
-        : {
-            name: 'person-add' as const,
-            onPress: () => createContact.mutate({ userId: user?.id!, contactId: +profileId }),
-            loading: createContact.isPending,
-          },
-      {
-        name: 'chatbubble-ellipses' as const,
-        onPress: () => router.push({ pathname: '/chat', params: { id: user?.id, recieverId: profileId } }),
-      },
-    ];
-  }, [getUser.data]);
+  const chatIcon = useMemo(
+    () => ({
+      name: 'chatbubble-ellipses' as const,
+      onPress: () => router.push({ pathname: '/chat', params: { id: user?.id, recieverId: profileId } }),
+    }),
+    [user?.id, profileId],
+  );
 
   return (
     <Loader loading={!user}>
@@ -57,9 +45,14 @@ const UserProfile = () => {
             <ThemedText>Last activity: {new Date(profile.lastActivity!).toLocaleString()}</ThemedText>
           </View>
           <View style={styles.icons}>
-            {icons.map(({ name, onPress, loading }) => (
-              <IconButton key={name} name={name} size={30} onPress={onPress} loading={loading || false} />
-            ))}
+            <ContactIcon isContact={getUser.data?.isContact} userId={user?.id!} profileId={profileId} />
+            <IconButton
+              key={chatIcon.name}
+              name={chatIcon.name}
+              size={30}
+              onPress={chatIcon.onPress}
+              loading={getUser.isPending}
+            />
           </View>
         </ThemedView>
       )}

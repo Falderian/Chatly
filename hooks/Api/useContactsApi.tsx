@@ -12,11 +12,16 @@ const useContactsApi = () => {
     onError: e => console.log(e),
   });
 
+  const isUserContact = useMutation({
+    mutationFn: ({ userId, contactId }: { userId: number; contactId: number }) =>
+      Api.contacts.isUserContact(userId, contactId),
+  });
+
   const deleteUserContact = useMutation({
     mutationFn: (ids: number[]) => Api.contacts.deleteUserContact(ids[0], ids[1]),
     onError: e => console.log(e),
   });
-  return { createContact, findUserContacts, deleteUserContact };
+  return { createContact, findUserContacts, deleteUserContact, isUserContact };
 };
 
 export default useContactsApi;

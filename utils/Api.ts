@@ -2,8 +2,9 @@ import axios from 'axios';
 import { TLoginUser, TRegisterUser, TUser } from '../types/userTypes';
 import Storage from './Storage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Platform } from 'react-native';
 
-const baseURL = process.env.EXPO_PUBLIC_API_URL;
+const baseURL = Platform.OS === 'web' ? 'http://127.0.0.1:3000' : 'https://chatly-backend-7z2g.onrender.com';
 
 const api = axios.create({
   baseURL,
@@ -49,6 +50,10 @@ class ApiUrls {
   };
 
   static contactsRoot = 'contacts/';
+  static contacts = {
+    user: this.contactsRoot + 'user/',
+    isContacts: this.contactsRoot + 'is-contact',
+  };
 }
 
 class Users {
@@ -86,10 +91,13 @@ class Contacts {
   createContact = async (data: { userId: number; contactId: number }) =>
     (await api.post(ApiUrls.contactsRoot, data)).data;
 
-  findUserContacs = async (id: number) => (await api.get(ApiUrls.contactsRoot + id)).data;
+  findUserContacs = async (id: number) => (await api.get(ApiUrls.contacts.user, { params: { id } })).data;
 
   deleteUserContact = async (id: number, contactId: number) =>
     (await api.delete(`${ApiUrls.contactsRoot}${id}/${contactId}`)).data;
+
+  isUserContact = async (userId: number, contactId: number) =>
+    (await api.get(ApiUrls.contacts.isContacts, { params: { userId, contactId } })).data;
 }
 export default class Api {
   static users = new Users();

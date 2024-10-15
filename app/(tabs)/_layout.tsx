@@ -1,11 +1,8 @@
-import { router, Stack, Tabs } from 'expo-router';
+import { Tabs } from 'expo-router';
 import React from 'react';
 
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { useColors } from '../../hooks/useColors';
-import Icon from '../../components/Icon';
-import { Pressable } from 'react-native';
-import BackButton from '../../components/BackButton';
 
 export default function TabLayout() {
   const colors = useColors();

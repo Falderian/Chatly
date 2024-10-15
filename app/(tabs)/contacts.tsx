@@ -22,7 +22,7 @@ const ContactsScreen = () => {
   useFocusEffect(
     useCallback(() => {
       if (user?.id && !searchUsers?.data) {
-        findUserContacts.mutateAsync(user.id);
+        findUserContacts.mutate(user.id);
       }
     }, [user?.id, searchUsers?.data]),
   );
