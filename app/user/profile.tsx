@@ -2,7 +2,6 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useMemo } from 'react';
 import { View } from 'react-native';
 import UserAvatar from '../../components/Avatar';
-import Icon, { TIconName } from '../../components/Icon';
 import Loader from '../../components/Loader';
 import { ThemedText } from '../../components/ThemedText';
 import { ThemedView } from '../../components/ThemedView';
@@ -40,7 +39,7 @@ const UserProfile = () => {
           },
       {
         name: 'chatbubble-ellipses' as const,
-        onPress: () => router.push({ pathname: '/(tabs)/chat', params: { id: user?.id, recieverId: profileId } }),
+        onPress: () => router.push({ pathname: '/chat', params: { id: user?.id, recieverId: profileId } }),
       },
     ];
   }, [getUser.data]);

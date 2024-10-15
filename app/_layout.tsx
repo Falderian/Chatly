@@ -31,8 +31,30 @@ export default function RootLayout() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <Stack screenOptions={{ headerShown: false, headerBackVisible: true }}>
-          <Stack.Screen name='+not-found' />
+        <Stack
+          screenOptions={{
+            headerShown: true,
+            headerStyle: { backgroundColor: colors.background.secondary },
+            headerTintColor: colors.text.default,
+            headerBackVisible: true,
+          }}
+        >
+          <Stack.Screen name='(tabs)' options={{ headerShown: false }} />
+
+          <Stack.Screen
+            name='chat'
+            options={{
+              headerShown: true,
+            }}
+          />
+
+          <Stack.Screen
+            name='user/profile'
+            options={{
+              headerShown: true,
+              headerTitle: 'User',
+            }}
+          />
         </Stack>
       </AuthProvider>
     </QueryClientProvider>

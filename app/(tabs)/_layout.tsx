@@ -14,7 +14,7 @@ export default function TabLayout() {
       screenOptions={{
         tabBarActiveTintColor: colors.primary,
         tabBarActiveBackgroundColor: colors.background.secondary,
-        tabBarInactiveBackgroundColor: colors.background.primary,
+        tabBarInactiveBackgroundColor: colors.background.secondary,
         headerTintColor: colors.text.default,
         headerStyle: {
           backgroundColor: colors.background.secondary,
@@ -42,22 +42,6 @@ export default function TabLayout() {
         options={{
           title: 'Contacts',
           tabBarIcon: ({ color, focused }) => <TabBarIcon name={focused ? 'people' : 'people-outline'} color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name='profile'
-        options={{
-          title: 'User Profile',
-          href: null,
-          headerLeft: BackButton,
-        }}
-      />
-
-      <Tabs.Screen
-        name='chat'
-        options={{
-          href: null,
-          headerLeft: BackButton,
         }}
       />
     </Tabs>

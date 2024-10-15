@@ -29,7 +29,7 @@ const ContactsScreen = () => {
 
   const renderUser = useCallback(({ item }: { item: TUser }) => {
     return (
-      <Link key={item.id} href={`/profile?id=${item.id}`} style={[styles.userProfile, { borderColor }]}>
+      <Link key={item.id} href={`/user/profile?id=${item.id}`} style={[styles.userProfile, { borderColor }]}>
         <UserAvatar size={80} />
         <View style={styles.userTexts}>
           <ThemedText type='subtitle'>
