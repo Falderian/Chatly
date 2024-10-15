@@ -6,6 +6,7 @@ import { FieldValues, useForm } from 'react-hook-form';
 import useAuthApi from '../hooks/Api/useAuthApi';
 import { TLoginUser } from '../types/userTypes';
 import { Link } from 'expo-router';
+import CustomButton from './CustomButton';
 
 export default function LoginForm() {
   const { control, handleSubmit, setError } = useForm<FieldValues>({
@@ -62,7 +63,12 @@ export default function LoginForm() {
           keyExtractor={item => item.name}
           contentContainerStyle={styles.list}
         />
-        <Button title='Login' onPress={handleSubmit(submit)} disabled={loginMutation.isPending} />
+        <CustomButton
+          title='Login'
+          onPress={handleSubmit(submit)}
+          disabled={loginMutation.isPending}
+          loading={loginMutation.isPending}
+        />
       </View>
       <View style={styles.linkContainer}>
         <ThemedText type='default'>Not having an account?</ThemedText>
@@ -77,18 +83,16 @@ export default function LoginForm() {
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
+    justifyContent: 'space-around',
     paddingHorizontal: 24,
     gap: 20,
-    width: '100%',
   },
   title: {
     textAlign: 'center',
   },
   view: { width: '100%', gap: 40 },
   list: {
-    flex: 1,
-    width: '100%',
-    gap: 20,
+    gap: 10,
   },
   button: {
     backgroundColor: 'rgb(0, 45, 227)',

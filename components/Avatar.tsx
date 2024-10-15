@@ -1,4 +1,5 @@
 import Avatar, { NiceAvatarProps } from '@zamplyy/react-native-nice-avatar';
+import { View } from 'react-native';
 
 type Props = Omit<NiceAvatarProps, 'size'> & { size?: number };
 

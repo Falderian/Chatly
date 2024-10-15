@@ -1,19 +1,14 @@
 import { TextInput, type TextInputProps, StyleSheet, View } from 'react-native';
 import React from 'react';
-import { useThemeColors } from '../hooks/useThemeColors';
+
 import { Controller, UseControllerProps, FieldValues } from 'react-hook-form';
 import { ThemedText } from './ThemedText';
+import { useColors } from '../hooks/useColors';
 
 type Props = UseControllerProps<FieldValues> & TextInputProps;
 
 export const ThemedTextInput: React.FC<Props> = ({ control, name, rules, ...otherProps }) => {
-  const [backgroundColor, color, dangerColor, lineColor] = useThemeColors([
-    'secondaryBackground' as const,
-    'text' as const,
-    'danger' as const,
-    'gradient1' as const,
-  ]);
-
+  const colors = useColors();
   return (
     <View style={styles.container}>
       <Controller
@@ -25,10 +20,17 @@ export const ThemedTextInput: React.FC<Props> = ({ control, name, rules, ...othe
             <TextInput
               {...field}
               {...otherProps}
-              style={[{ backgroundColor, color, borderColor: errors[name] ? dangerColor : lineColor }, styles.input]}
+              style={[
+                {
+                  backgroundColor: colors.background.secondary,
+                  color: colors.text.default,
+                  borderColor: errors[name] ? colors.danger : colors.background.primary,
+                },
+                styles.input,
+              ]}
             />
 
-            <ThemedText darkColor={dangerColor} lightColor={dangerColor} style={{ height: 10 }}>
+            <ThemedText darkColor={colors.danger} lightColor={colors.danger} style={{ height: 10 }}>
               <>{errors[name]?.message}</>
             </ThemedText>
           </>

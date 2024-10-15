@@ -32,15 +32,28 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   useEffect(() => {
-    Storage.getItem('access_token').then(v => {
-      if (!v) router.push('/login');
-    });
-    if (!user)
-      Storage.getItem('id').then(async id => {
-        if (!id) router.push('/login');
-        else setUser(await getUser.mutateAsync(id));
-      });
-  }, []);
+    const initializeAuth = async () => {
+      const token = await Storage.getItem('access_token');
+      if (!token) {
+        router.push('/login');
+        return;
+      }
+
+      if (!user) {
+        const storedUser = await Storage.getItem('user');
+        if (storedUser) {
+          setUser(JSON.parse(storedUser));
+        } else {
+          const id = await Storage.getItem('id');
+          const fetchedUser = await getUser.mutateAsync(id as string);
+          setUser(fetchedUser);
+          Storage.setItem('user', JSON.stringify(fetchedUser));
+        }
+      }
+    };
+
+    initializeAuth();
+  }, [user]);
 
   return <AuthContext.Provider value={{ user, setUser, logout }}>{children}</AuthContext.Provider>;
 };
