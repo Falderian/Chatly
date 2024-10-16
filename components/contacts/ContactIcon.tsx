@@ -1,8 +1,6 @@
 import { memo, useEffect, useMemo } from 'react';
 import IconButton from '../IconButton';
 import useContactsApi from '../../hooks/Api/useContactsApi';
-import Loader from '../Loader';
-import { ActivityIndicator } from 'react-native';
 import Spinner from '../Spinner';
 
 interface ContactIconProps {
@@ -19,19 +17,21 @@ const ContactIcon: React.FC<ContactIconProps> = memo(({ userId, profileId }) => 
 
   if (!isUserContact) return <Spinner />;
 
-  const icon = isUserContact
+  const icon = isUserContact.data
     ? {
         name: 'checkmark-circle-outline' as const,
-        onPress: () => {
+        onPress: () =>
           deleteUserContact
             .mutateAsync([userId, +profileId])
-            .then(() => isUserContact.mutate({ userId, contactId: +profileId }));
-        },
+            .then(() => isUserContact.mutate({ userId, contactId: +profileId })),
         loading: deleteUserContact.isPending,
       }
     : {
         name: 'person-add' as const,
-        onPress: () => createContact.mutate({ userId, contactId: +profileId }),
+        onPress: () =>
+          createContact
+            .mutateAsync({ userId, contactId: +profileId })
+            .then(() => isUserContact.mutate({ userId, contactId: +profileId })),
         loading: createContact.isPending,
       };
 
