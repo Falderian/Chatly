@@ -2,9 +2,8 @@ import axios from 'axios';
 import { TLoginUser, TRegisterUser, TUser } from '../types/userTypes';
 import Storage from './Storage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Platform } from 'react-native';
 
-const baseURL = Platform.OS === 'web' ? 'http://127.0.0.1:3000' : 'https://chatly-backend-7z2g.onrender.com';
+const baseURL = 'http://192.168.0.104:3000';
 
 const api = axios.create({
   baseURL,

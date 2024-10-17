@@ -9,7 +9,7 @@ import { Link, useFocusEffect } from 'expo-router';
 import { TUser } from '../../types/userTypes';
 import { useColors } from '../../hooks/useColors';
 import useContactsApi from '../../hooks/Api/useContactsApi';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 
 const ContactsScreen = () => {
@@ -47,7 +47,11 @@ const ContactsScreen = () => {
 
   return (
     <ThemedView style={styles.container}>
-      <Search fetch={searchUsers} placeholder='Type to search users' />
+      <Search
+        fetch={searchUsers}
+        placeholder='Type to search users'
+        loading={findUserContacts.isPending || searchUsers.isPending}
+      />
       <FlatList data={data} renderItem={renderUser} />
     </ThemedView>
   );

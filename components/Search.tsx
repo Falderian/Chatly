@@ -7,9 +7,10 @@ import { useColors } from '../hooks/useColors';
 
 type Props = {
   fetch: UseMutationResult<any, Error, string, unknown>;
+  loading?: boolean;
 };
 
-const Search = ({ fetch, ...props }: Props & TextInputProps) => {
+const Search = ({ fetch, loading, ...props }: Props & TextInputProps) => {
   const colors = useColors();
 
   const handleSearch = debounce(async (text: string) => {
@@ -19,7 +20,7 @@ const Search = ({ fetch, ...props }: Props & TextInputProps) => {
 
   return (
     <View style={[styles.inputContainer]}>
-      {fetch.isPending ? (
+      {fetch.isPending || loading ? (
         <ActivityIndicator size='small' color={colors.primary} style={styles.icon} />
       ) : (
         <Ionicons name='search' size={20} color={colors.primary} style={styles.icon} />

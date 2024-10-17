@@ -22,8 +22,6 @@ const UserProfile: React.FC = () => {
     if (profileId) getUser.mutate(profileId);
   }, [profileId]);
 
-  const profile = useMemo(() => getUser.data, [getUser.data]);
-
   const chatIcon = useMemo(
     () => ({
       name: 'chatbubble-ellipses' as const,
@@ -33,19 +31,19 @@ const UserProfile: React.FC = () => {
   );
 
   return (
-    <Loader loading={!user}>
-      {profile && (
+    <Loader loading={getUser.isPending}>
+      {getUser.data && (
         <ThemedView style={styles.container}>
           <UserAvatar size={150} />
           <View style={styles.profile}>
             <ThemedText type='title'>
-              {profile.firstName} {profile.lastName}
+              {getUser.data.firstName} {getUser.data.lastName}
             </ThemedText>
-            <ThemedText type='defaultSemiBold'>{profile.email}</ThemedText>
-            <ThemedText>Last activity: {new Date(profile.lastActivity!).toLocaleString()}</ThemedText>
+            <ThemedText type='defaultSemiBold'>{getUser.data.email}</ThemedText>
+            <ThemedText>Last activity: {new Date(getUser.data.lastActivity!).toLocaleString()}</ThemedText>
           </View>
           <View style={styles.icons}>
-            <ContactIcon isContact={getUser.data?.isContact} userId={user?.id!} profileId={profileId} />
+            <ContactIcon userId={user?.id!} profileId={profileId} />
             <IconButton
               key={chatIcon.name}
               name={chatIcon.name}
