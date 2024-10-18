@@ -9,8 +9,9 @@ import { Link, useFocusEffect } from 'expo-router';
 import { TUser } from '../../types/userTypes';
 import { useColors } from '../../hooks/useColors';
 import useContactsApi from '../../hooks/Api/useContactsApi';
-import { useCallback } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
+import { useMutation } from '@tanstack/react-query';
 
 const ContactsScreen = () => {
   const { user } = useAuth();
@@ -19,40 +20,52 @@ const ContactsScreen = () => {
 
   const borderColor = useColors().background.secondary;
 
+  const hasSearched = useRef(false);
+
+  const searchUsersMutation = useMutation({
+    mutationFn: (text: string) => {
+      hasSearched.current = !!text;
+      return searchUsers.mutateAsync(text);
+    },
+  });
+
   useFocusEffect(
     useCallback(() => {
-      if (user?.id && !searchUsers?.data) {
+      if (user?.id && !hasSearched.current) {
         findUserContacts.mutate(user.id);
       }
-    }, [user?.id, searchUsers?.data]),
+    }, [user?.id, hasSearched.current]),
   );
 
-  const renderUser = useCallback(({ item }: { item: TUser }) => {
-    return (
-      <Link key={item.id} href={`/user/profile?id=${item.id}`} style={[styles.userProfile, { borderColor }]}>
-        <UserAvatar size={80} />
-        <View style={styles.userTexts}>
-          <ThemedText type='subtitle'>
-            {item.firstName} {item.lastName}
-          </ThemedText>
-          <ThemedText style={{ fontSize: 14 }}>
-            Last acitivity: {new Date(item.lastActivity).toLocaleString()}
-          </ThemedText>
-        </View>
-      </Link>
-    );
-  }, []);
+  const renderUser = useCallback(
+    ({ item }: { item: TUser }) => {
+      return (
+        <Link key={item.id} href={`/user/profile?id=${item.id}`} style={[styles.userProfile, { borderColor }]}>
+          <UserAvatar size={80} />
+          <View style={styles.userTexts}>
+            <ThemedText type='subtitle'>
+              {item.firstName} {item.lastName}
+            </ThemedText>
+            <ThemedText style={{ fontSize: 14 }}>
+              Last activity: {new Date(item.lastActivity).toLocaleString()}
+            </ThemedText>
+          </View>
+        </Link>
+      );
+    },
+    [borderColor],
+  );
 
-  const data = searchUsers.data || findUserContacts.data || [];
+  const data = searchUsersMutation.data || (hasSearched ? [] : findUserContacts.data) || [];
 
   return (
     <ThemedView style={styles.container}>
       <Search
-        fetch={searchUsers}
+        fetch={searchUsersMutation}
         placeholder='Type to search users'
-        loading={findUserContacts.isPending || searchUsers.isPending}
+        loading={findUserContacts.isPending || searchUsersMutation.isPending}
       />
-      <FlatList data={data} renderItem={renderUser} />
+      {data.length ? <FlatList data={data} renderItem={renderUser} /> : <ThemedText>No users found</ThemedText>}
     </ThemedView>
   );
 };
