@@ -16,10 +16,6 @@ const ContactIcon: React.FC<ContactIconProps> = memo(({ userId, profileId }) => 
     isUserContact.mutateAsync({ userId, contactId: +profileId }).then(res => (isContact.current = res));
   }, []);
 
-  useEffect(() => {
-    console.log('render');
-  });
-
   const icon = isContact.current
     ? {
         name: 'checkmark-circle-outline' as const,

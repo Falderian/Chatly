@@ -5,7 +5,7 @@ import { useColors } from '../hooks/useColors';
 
 type Props = {
   loading: boolean;
-  children: ReactNode;
+  children?: ReactNode;
 };
 
 const Loader = ({ loading, children }: Props) => {

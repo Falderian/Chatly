@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { TouchableOpacity, Text, StyleSheet, ActivityIndicator, View, GestureResponderEvent } from 'react-native';
 import { useColors } from '../hooks/useColors';
+import Spinner from './Spinner';
 
 type CustomButtonProps = {
   title: string;
@@ -12,25 +13,14 @@ type CustomButtonProps = {
 const CustomButton = ({ title, onPress, loading, disabled }: CustomButtonProps) => {
   const colors = useColors();
 
+  const backgroundColor = useMemo(
+    () => (disabled || loading ? colors.text.secondary : colors.primary),
+    [loading, disabled],
+  );
+
   return (
-    <TouchableOpacity
-      style={[styles.button, { backgroundColor: colors.primary }]}
-      onPress={onPress}
-      disabled={disabled || loading}
-    >
-      {loading ? (
-        <ActivityIndicator size='small' color={colors.primary} />
-      ) : (
-        <Text
-          style={[
-            styles.buttonText,
-            { color: colors.text.default },
-            { backgroundColor: disabled ? colors.text.secondary : colors.primary },
-          ]}
-        >
-          {title}
-        </Text>
-      )}
+    <TouchableOpacity style={[styles.button, { backgroundColor }]} onPress={onPress} disabled={disabled || loading}>
+      {loading ? <Spinner /> : <Text style={[styles.buttonText, { color: colors.text.default }, {}]}>{title}</Text>}
     </TouchableOpacity>
   );
 };

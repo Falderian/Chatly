@@ -3,7 +3,7 @@ import { TLoginUser, TRegisterUser, TUser } from '../types/userTypes';
 import Storage from './Storage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const baseURL = 'http://192.168.0.104:3000';
+const baseURL = 'http://localhost:3000';
 
 const api = axios.create({
   baseURL,
@@ -53,6 +53,8 @@ class ApiUrls {
     user: this.contactsRoot + 'user/',
     isContacts: this.contactsRoot + 'is-contact',
   };
+
+  static messagesRoot = 'messages/';
 }
 
 class Users {
@@ -83,7 +85,12 @@ class Users {
 }
 
 class Chats {
+  getChatById = async (id: number) => (await api.get(ApiUrls.chatsRoot + id)).data;
+
   getUserChats = async (id: number) => (await api.get(ApiUrls.chats.user + id)).data;
+
+  create = async (senderId: number, receiverId: number) =>
+    (await api.post(ApiUrls.chatsRoot, { senderId, receiverId })).data;
 }
 
 class Contacts {
@@ -98,8 +105,15 @@ class Contacts {
   isUserContact = async (userId: number, contactId: number) =>
     (await api.get(ApiUrls.contacts.isContacts, { params: { userId, contactId } })).data;
 }
+
+class Messages {
+  create = async (conversationId: number, content: string) =>
+    (await api.post(ApiUrls.messagesRoot, { conversationId, content })).data;
+}
+
 export default class Api {
   static users = new Users();
   static chats = new Chats();
   static contacts = new Contacts();
+  static messages = new Messages();
 }

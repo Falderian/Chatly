@@ -5,11 +5,11 @@ import useUserApi from '../../hooks/Api/useUserApi';
 import { ThemedText } from '../../components/ThemedText';
 import UserAvatar from '../../components/Avatar';
 
-import { Link, useFocusEffect } from 'expo-router';
+import { Link } from 'expo-router';
 import { TUser } from '../../types/userTypes';
 import { useColors } from '../../hooks/useColors';
 import useContactsApi from '../../hooks/Api/useContactsApi';
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useMutation } from '@tanstack/react-query';
 
@@ -20,22 +20,20 @@ const ContactsScreen = () => {
 
   const borderColor = useColors().background.secondary;
 
-  const hasSearched = useRef(false);
+  const [hasSearched, setHasSearched] = useState(false);
 
   const searchUsersMutation = useMutation({
     mutationFn: (text: string) => {
-      hasSearched.current = !!text;
+      setHasSearched(!!text);
       return searchUsers.mutateAsync(text);
     },
   });
 
-  useFocusEffect(
-    useCallback(() => {
-      if (user?.id && !hasSearched.current) {
-        findUserContacts.mutate(user.id);
-      }
-    }, [user?.id, hasSearched.current]),
-  );
+  useEffect(() => {
+    if (user?.id && !hasSearched) {
+      findUserContacts.mutate(user.id);
+    }
+  }, [user?.id, hasSearched]);
 
   const renderUser = useCallback(
     ({ item }: { item: TUser }) => {

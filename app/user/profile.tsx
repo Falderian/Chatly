@@ -8,14 +8,15 @@ import { ThemedView } from '../../components/ThemedView';
 import useUserApi from '../../hooks/Api/useUserApi';
 import { StyleSheet } from 'react-native';
 import IconButton from '../../components/IconButton';
-import useContactsApi from '../../hooks/Api/useContactsApi';
 import { useAuth } from '../../contexts/AuthContext';
 import React from 'react';
 import ContactIcon from '../../components/contacts/ContactIcon';
+import useChatsApi from '../../hooks/Api/useChatsApi';
 
 const UserProfile: React.FC = () => {
   const { user } = useAuth();
   const { getUser } = useUserApi();
+  const { getOrCreateChat } = useChatsApi();
   const profileId = useLocalSearchParams().id as string;
 
   useEffect(() => {
@@ -25,9 +26,13 @@ const UserProfile: React.FC = () => {
   const chatIcon = useMemo(
     () => ({
       name: 'chatbubble-ellipses' as const,
-      onPress: () => router.push({ pathname: '/chat', params: { id: user?.id, recieverId: profileId } }),
+      onPress: () => {
+        getOrCreateChat
+          .mutateAsync({ senderId: user!.id, receiverId: +profileId })
+          .then(res => router.push({ pathname: '/chat', params: { id: res.id, recieverId: profileId } }));
+      },
     }),
-    [user?.id, profileId],
+    [user],
   );
 
   return (

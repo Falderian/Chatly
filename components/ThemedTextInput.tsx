@@ -1,13 +1,17 @@
 import { TextInput, type TextInputProps, StyleSheet, View } from 'react-native';
 import React from 'react';
-
 import { Controller, UseControllerProps, FieldValues } from 'react-hook-form';
 import { ThemedText } from './ThemedText';
 import { useColors } from '../hooks/useColors';
 
-type Props = UseControllerProps<FieldValues> & TextInputProps;
+type Props<TFieldValues extends FieldValues> = UseControllerProps<TFieldValues> & TextInputProps;
 
-export const ThemedTextInput: React.FC<Props> = ({ control, name, rules, ...otherProps }) => {
+export const ThemedTextInput = <TFieldValues extends FieldValues>({
+  control,
+  name,
+  rules,
+  ...otherProps
+}: Props<TFieldValues>) => {
   const colors = useColors();
   return (
     <View style={styles.container}>
@@ -31,7 +35,7 @@ export const ThemedTextInput: React.FC<Props> = ({ control, name, rules, ...othe
             />
 
             <ThemedText darkColor={colors.danger} lightColor={colors.danger} style={{ height: 10 }}>
-              <>{errors[name]?.message}</>
+              {errors[name]?.message?.toString()}
             </ThemedText>
           </>
         )}
