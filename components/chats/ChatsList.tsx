@@ -5,7 +5,7 @@ import useChatsApi from '../../hooks/Api/useChatsApi';
 import useUserApi from '../../hooks/Api/useUserApi';
 import Loader from '../Loader';
 import { ThemedView } from '../ThemedView';
-import { IChat } from '../../types/chatTypes';
+import { IChat, IChatWithParticipant } from '../../types/chatTypes';
 import { View } from 'react-native';
 import { ThemedText } from '../ThemedText';
 import UserAvatar from '../Avatar';
@@ -18,11 +18,22 @@ const ChatsList = () => {
     if (user?.id) getUserChats.mutate(user.id);
   }, [user]);
 
-  const renderChat = (chat: IChat) => {
+  const renderChat = (chat: IChatWithParticipant) => {
+    const { participant, lastMessage } = chat;
+
     return (
       <View style={styles.chat}>
         <UserAvatar size={80} />
-        <ThemedText>{chat.id}</ThemedText>
+        <View>
+          <ThemedText type='subtitle'>
+            {participant.firstName} {participant.lastName}
+          </ThemedText>
+          <ThemedText>{lastMessage.content}</ThemedText>
+        </View>
+        <View>
+          {/* <ThemedText>{new Date(lastMessage.createdAt).toJSON()}</ThemedText> */}
+          <ThemedText>{lastMessage.isRead}</ThemedText>
+        </View>
       </View>
     );
   };
