@@ -7,24 +7,18 @@ import { ThemedView } from '../../components/ThemedView';
 import Search from '../../components/Search';
 import { StyleSheet } from 'react-native';
 import useUserApi from '../../hooks/Api/useUserApi';
+import ChatsList from '../../components/chats/ChatsList';
 
-export default function ChatsScreen() {
-  const { user } = useAuth();
-  const { getUserChats } = useChatsApi();
+const ChatsScreen = () => {
   const { searchUsers } = useUserApi();
 
-  useEffect(() => {
-    if (user?.id) getUserChats.mutate(user.id);
-  }, [user]);
-
   return (
-    <Loader loading={Boolean(getUserChats.isPending)}>
-      <ThemedView style={styles.container}>
-        <Search fetch={searchUsers} placeholder='Type to search chats' />
-      </ThemedView>
-    </Loader>
+    <ThemedView style={styles.container}>
+      <Search fetch={searchUsers} placeholder='Type to search chats' />
+      <ChatsList />
+    </ThemedView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -36,3 +30,5 @@ const styles = StyleSheet.create({
     paddingTop: 16,
   },
 });
+
+export default ChatsScreen;

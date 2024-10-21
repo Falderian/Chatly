@@ -5,12 +5,10 @@ import Icon from '../Icon';
 import useMessagesApi from '../../hooks/Api/useMessagesApi';
 
 import Spinner from '../Spinner';
-import { UseMutationResult } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
-
+import { IMessage } from '../../types/messagesTypes';
 type Props = {
   chatId: number;
-  updateMessages: UseMutationResult<any, AxiosError<any, any>, number, unknown>;
+  updateMessages: (msg: IMessage) => void;
 };
 
 interface IForm extends FieldValues {
@@ -19,14 +17,17 @@ interface IForm extends FieldValues {
 
 const MessageInput = ({ chatId, updateMessages }: Props) => {
   const { sendMsg } = useMessagesApi();
-  const { control, handleSubmit } = useForm<IForm>({
+  const { control, handleSubmit, reset } = useForm<IForm>({
     defaultValues: {
       content: '',
     },
   });
 
   const submit = (data: { content: string }) =>
-    sendMsg.mutateAsync({ chatId, msg: data.content }).then(() => updateMessages.mutate(chatId));
+    sendMsg.mutateAsync({ chatId, msg: data.content }).then((msg: IMessage) => {
+      updateMessages(msg);
+      reset();
+    });
 
   return (
     <View style={styles.contaier}>
@@ -40,7 +41,7 @@ const MessageInput = ({ chatId, updateMessages }: Props) => {
 };
 
 const styles = StyleSheet.create({
-  contaier: { flexDirection: 'row', padding: 8, gap: 8, width: '100%' },
+  contaier: { flexDirection: 'row', paddingHorizontal: 8, gap: 8, width: '100%' },
 });
 
 export default MessageInput;
