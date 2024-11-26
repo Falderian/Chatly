@@ -1,7 +1,6 @@
 import React from 'react';
-import { useTheme } from '@react-navigation/native';
 import { StyleSheet, View } from 'react-native';
-import Svg, { Rect, Path, G, ClipPath, Defs } from 'react-native-svg';
+import { ClipPath, Defs, G, Path, Rect, Svg } from 'react-native-svg';
 import { useColors } from '../../hooks/useColors';
 
 const LoginLogo = () => {
@@ -13,7 +12,7 @@ const LoginLogo = () => {
 
   return (
     <View style={styles.container}>
-      <Svg width='300' height='300' viewBox='0 0 262 271' fill='none'>
+      <Svg width='262' height='271' viewBox='0 0 262 271' fill='none'>
         <Rect x='3.89368' y='43' width='117.463' height='117.463' rx='58.7314' fill='#CDE1FD' />
         <G clipPath='url(#clip0)'>
           <Path d='M94.8317 71.6702L101.685 65.6163H94.6946L94.8317 71.6702Z' fill='#002DE3' />

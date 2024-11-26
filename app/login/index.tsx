@@ -1,7 +1,7 @@
 import { StyleSheet, View } from 'react-native';
-import { ThemedView } from '../../components/ThemedView';
 import LoginForm from '../../components/LoginForm';
 import LoginLogo from '../../components/svg/LoginLogo';
+import { ThemedView } from '../../components/ThemedView';
 
 const LoginScreen = () => {
   return (
