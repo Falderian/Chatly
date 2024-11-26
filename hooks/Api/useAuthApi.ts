@@ -4,7 +4,6 @@ import { Alert } from 'react-native';
 import Api from '../../utils/Api';
 import { useAuth } from '../../contexts/AuthContext';
 import { useRouter } from 'expo-router';
-import Storage from '../../utils/Storage';
 
 const useAuthApi = () => {
   const { setUser } = useAuth();

@@ -2,32 +2,28 @@ import { Tabs } from 'expo-router';
 import React from 'react';
 
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
-import { useThemeColors } from '../../hooks/useThemeColors';
+import { useColors } from '../../hooks/useColors';
 
 export default function TabLayout() {
-  const [tabBarActiveTintColor, tabBarInactiveBackgroundColor, tabBarActiveBackgroundColor, text] = useThemeColors([
-    'gradient1',
-    'background',
-    'secondaryBackground',
-    'text',
-  ]);
-
+  const colors = useColors();
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor,
-        tabBarInactiveBackgroundColor,
-        tabBarActiveBackgroundColor,
-        headerTintColor: text,
-
+        tabBarActiveTintColor: colors.primary,
+        tabBarActiveBackgroundColor: colors.background.secondary,
+        tabBarInactiveBackgroundColor: colors.background.secondary,
+        headerTintColor: colors.text.default,
         headerStyle: {
-          backgroundColor: tabBarActiveBackgroundColor,
-          borderBottomColor: tabBarActiveBackgroundColor,
+          backgroundColor: colors.background.secondary,
+          borderBottomColor: colors.background.primary,
         },
         tabBarStyle: {
-          borderTopColor: tabBarActiveBackgroundColor,
+          borderTopColor: colors.background.primary,
+          borderTopWidth: 1,
         },
+        tabBarLabelStyle: { fontSize: 14, color: colors.text.default },
       }}
+      backBehavior='history'
     >
       <Tabs.Screen
         name='index'

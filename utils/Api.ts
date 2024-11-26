@@ -3,7 +3,7 @@ import { TLoginUser, TRegisterUser, TUser } from '../types/userTypes';
 import Storage from './Storage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const baseURL = 'http://localhost:1234/';
+const baseURL = 'http://localhost:3000';
 
 const api = axios.create({
   baseURL,
@@ -22,6 +22,17 @@ api.interceptors.request.use(async config => {
   return config;
 });
 
+api.interceptors.response.use(
+  response => response,
+  async error => {
+    if (error.response && error.response.status === 401) {
+      await AsyncStorage.removeItem('access_token');
+      await AsyncStorage.removeItem('id');
+    }
+    return Promise.reject(error);
+  },
+);
+
 class ApiUrls {
   static authRoot = 'auth/';
 
@@ -36,6 +47,14 @@ class ApiUrls {
   static chats = {
     user: this.chatsRoot + 'user/',
   };
+
+  static contactsRoot = 'contacts/';
+  static contacts = {
+    user: this.contactsRoot + 'user/',
+    isContacts: this.contactsRoot + 'is-contact',
+  };
+
+  static messagesRoot = 'messages/';
 }
 
 class Users {
@@ -48,7 +67,7 @@ class Users {
 
     if (access_token) {
       await Storage.setItem('access_token', access_token);
-      await Storage.setItem('id', id);
+      await Storage.setItem('id', id.toString());
     }
 
     return response.data;
@@ -57,18 +76,44 @@ class Users {
   find = async (id: string) => (await api.get<TUser>(ApiUrls.usersRoot + id)).data;
 
   search = async (username: string) => {
-    const response = await api.get(ApiUrls.users.search, {
+    const response = await api.get<TUser[]>(ApiUrls.users.search, {
       params: { query: username },
     });
+
     return response.data;
   };
 }
 
 class Chats {
+  getChatById = async (id: number) => (await api.get(ApiUrls.chatsRoot + id)).data;
+
   getUserChats = async (id: number) => (await api.get(ApiUrls.chats.user + id)).data;
+
+  create = async (senderId: number, receiverId: number) =>
+    (await api.post(ApiUrls.chatsRoot, { senderId, receiverId })).data;
+}
+
+class Contacts {
+  createContact = async (data: { userId: number; contactId: number }) =>
+    (await api.post(ApiUrls.contactsRoot, data)).data;
+
+  findUserContacs = async (id: number) => (await api.get(ApiUrls.contacts.user, { params: { id } })).data;
+
+  deleteUserContact = async (id: number, contactId: number) =>
+    (await api.delete(`${ApiUrls.contactsRoot}${id}/${contactId}`)).data;
+
+  isUserContact = async (userId: number, contactId: number) =>
+    (await api.get(ApiUrls.contacts.isContacts, { params: { userId, contactId } })).data;
+}
+
+class Messages {
+  create = async (conversationId: number, content: string) =>
+    (await api.post(ApiUrls.messagesRoot, { conversationId, content })).data;
 }
 
 export default class Api {
   static users = new Users();
   static chats = new Chats();
+  static contacts = new Contacts();
+  static messages = new Messages();
 }
