@@ -1,9 +1,9 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { TLoginUser, TRegisterUser, TUser } from '../types/userTypes';
 import Storage from './Storage';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const baseURL = 'http://localhost:3000';
+const baseURL = process.env.EXPO_PUBLIC_API_URL || 'http://localhost:3000';
 
 const api = axios.create({
   baseURL,
@@ -61,8 +61,8 @@ class Users {
   register = async (data: TRegisterUser) => await api.post(ApiUrls.users.register, data);
 
   login = async (data: TLoginUser) => {
+    console.warn(baseURL);
     const response = await api.post(ApiUrls.users.login, data);
-
     const { access_token, id } = response.data;
 
     if (access_token) {

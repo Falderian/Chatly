@@ -1,12 +1,12 @@
-import { View, FlatList, Button, StyleSheet } from 'react-native';
-import { ThemedText } from './ThemedText';
-import { ThemedView } from './ThemedView';
-import { ThemedTextInput } from './ThemedTextInput';
+import { Link } from 'expo-router';
 import { FieldValues, useForm } from 'react-hook-form';
+import { FlatList, StyleSheet, View } from 'react-native';
 import useAuthApi from '../hooks/Api/useAuthApi';
 import { TLoginUser } from '../types/userTypes';
-import { Link } from 'expo-router';
 import CustomButton from './CustomButton';
+import { ThemedText } from './ThemedText';
+import { ThemedTextInput } from './ThemedTextInput';
+import { ThemedView } from './ThemedView';
 
 export default function LoginForm() {
   const { control, handleSubmit, setError } = useForm<FieldValues>({
@@ -46,10 +46,11 @@ export default function LoginForm() {
     />
   );
 
-  const submit = (data: FieldValues) =>
+  const submit = (data: FieldValues) => {
     loginMutation
       .mutateAsync(data as TLoginUser)
       .catch(e => setError('email', { type: 'manual', message: e.response.data.message }));
+  };
 
   return (
     <ThemedView style={styles.container}>

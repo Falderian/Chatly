@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { TouchableOpacity, Text, StyleSheet, ActivityIndicator, View, GestureResponderEvent } from 'react-native';
+import { GestureResponderEvent, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { useColors } from '../hooks/useColors';
 import Spinner from './Spinner';
 
@@ -20,7 +20,7 @@ const CustomButton = ({ title, onPress, loading, disabled }: CustomButtonProps) 
 
   return (
     <TouchableOpacity style={[styles.button, { backgroundColor }]} onPress={onPress} disabled={disabled || loading}>
-      {loading ? <Spinner /> : <Text style={[styles.buttonText, { color: colors.text.default }, {}]}>{title}</Text>}
+      {loading ? <Spinner /> : <Text style={[styles.buttonText, { color: 'white' }, {}]}>{title}</Text>}
     </TouchableOpacity>
   );
 };

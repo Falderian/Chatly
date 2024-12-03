@@ -5,9 +5,9 @@ import { useEffect } from 'react';
 import 'react-native-reanimated';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ActivityIndicator } from 'react-native';
 import { AuthProvider } from '../contexts/AuthContext';
 import { useColors } from '../hooks/useColors';
-import { ActivityIndicator } from 'react-native';
 
 const queryClient = new QueryClient();
 
@@ -40,15 +40,26 @@ export default function RootLayout() {
             headerShadowVisible: false,
           }}
         >
+          {' '}
+          <Stack.Screen
+            name='login/index'
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name='register/index'
+            options={{
+              headerShown: false,
+            }}
+          />
           <Stack.Screen name='(tabs)' options={{ headerShown: false }} />
-
           <Stack.Screen
             name='chat/index'
             options={{
               headerShown: true,
             }}
           />
-
           <Stack.Screen
             name='user/profile'
             options={{

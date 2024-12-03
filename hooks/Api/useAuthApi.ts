@@ -1,9 +1,8 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useMutation } from '@tanstack/react-query';
-import { Alert } from 'react-native';
-import Api from '../../utils/Api';
-import { useAuth } from '../../contexts/AuthContext';
 import { useRouter } from 'expo-router';
+import { Alert } from 'react-native';
+import { useAuth } from '../../contexts/AuthContext';
+import Api from '../../utils/Api';
 
 const useAuthApi = () => {
   const { setUser } = useAuth();
