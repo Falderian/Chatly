@@ -1,38 +1,47 @@
-import { FlatList, StyleSheet } from 'react-native';
+import { Link, useRouter } from 'expo-router';
+import { useCallback, useEffect } from 'react';
+import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useAuth } from '../../contexts/AuthContext';
-import { useEffect } from 'react';
 import useChatsApi from '../../hooks/Api/useChatsApi';
-import useUserApi from '../../hooks/Api/useUserApi';
-import Loader from '../Loader';
-import { ThemedView } from '../ThemedView';
-import { IChat, IChatWithParticipant } from '../../types/chatTypes';
-import { View } from 'react-native';
-import { ThemedText } from '../ThemedText';
+import { IChatWithParticipant } from '../../types/chatTypes';
+import { formatDate } from '../../utils/utils';
 import UserAvatar from '../Avatar';
+import Loader from '../Loader';
+import { ThemedText } from '../ThemedText';
+import { ThemedView } from '../ThemedView';
+import { UnreadIcon } from '../UnreadIcon';
 
 const ChatsList = () => {
   const { user } = useAuth();
   const { getUserChats } = useChatsApi();
+  const { push } = useRouter();
 
   useEffect(() => {
     if (user?.id) getUserChats.mutate(user.id);
   }, [user]);
+
+  const goToChat = useCallback(
+    (chatId: number, recieverId: number) => push({ pathname: '/chat', params: { id: chatId, recieverId } }),
+    [user],
+  );
 
   const renderChat = (chat: IChatWithParticipant) => {
     const { participant, lastMessage } = chat;
 
     return (
       <View style={styles.chat}>
-        <UserAvatar size={80} />
-        <View>
+        <Link key={participant.id} href={`/user/profile?id=${participant.id}`}>
+          <UserAvatar size={80} />
+        </Link>
+        <TouchableOpacity onPress={() => goToChat(chat.id, participant.id)} style={styles.chatDetails}>
           <ThemedText type='subtitle'>
             {participant.firstName} {participant.lastName}
           </ThemedText>
           <ThemedText>{lastMessage.content}</ThemedText>
-        </View>
-        <View>
-          {/* <ThemedText>{new Date(lastMessage.createdAt).toJSON()}</ThemedText> */}
-          <ThemedText>{lastMessage.isRead}</ThemedText>
+        </TouchableOpacity>
+        <View style={styles.chatMeta}>
+          <ThemedText>{formatDate(lastMessage.createdAt)}</ThemedText>
+          <UnreadIcon isRead={lastMessage.isRead} />
         </View>
       </View>
     );
@@ -61,7 +70,18 @@ const styles = StyleSheet.create({
     gap: 8,
     width: '100%',
   },
-  chat: { flexDirection: 'row', width: '100%' },
+  chat: {
+    flexDirection: 'row',
+    width: '100%',
+    gap: 8,
+    alignItems: 'center',
+  },
+  chatDetails: {
+    flex: 1,
+  },
+  chatMeta: {
+    alignItems: 'flex-end',
+  },
 });
 
 export default ChatsList;

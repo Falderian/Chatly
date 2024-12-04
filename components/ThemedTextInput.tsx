@@ -1,8 +1,8 @@
-import { TextInput, type TextInputProps, StyleSheet, View } from 'react-native';
 import React from 'react';
-import { Controller, UseControllerProps, FieldValues } from 'react-hook-form';
-import { ThemedText } from './ThemedText';
+import { Controller, FieldValues, UseControllerProps } from 'react-hook-form';
+import { StyleSheet, TextInput, View, type TextInputProps } from 'react-native';
 import { useColors } from '../hooks/useColors';
+import { ThemedText } from './ThemedText';
 
 type Props<TFieldValues extends FieldValues> = UseControllerProps<TFieldValues> & TextInputProps;
 
@@ -24,6 +24,7 @@ export const ThemedTextInput = <TFieldValues extends FieldValues>({
             <TextInput
               {...field}
               {...otherProps}
+              onChangeText={field.onChange}
               style={[
                 {
                   backgroundColor: colors.background.secondary,

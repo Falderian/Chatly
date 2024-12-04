@@ -1,13 +1,8 @@
-import { useEffect, useState } from 'react';
-import useChatsApi from '../../hooks/Api/useChatsApi';
-import { useAuth } from '../../contexts/AuthContext';
-import { ThemedText } from '../../components/ThemedText';
-import Loader from '../../components/Loader';
-import { ThemedView } from '../../components/ThemedView';
-import Search from '../../components/Search';
 import { StyleSheet } from 'react-native';
-import useUserApi from '../../hooks/Api/useUserApi';
 import ChatsList from '../../components/chats/ChatsList';
+import Search from '../../components/Search';
+import { ThemedView } from '../../components/ThemedView';
+import useUserApi from '../../hooks/Api/useUserApi';
 
 const ChatsScreen = () => {
   const { searchUsers } = useUserApi();

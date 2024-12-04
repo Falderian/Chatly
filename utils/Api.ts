@@ -12,19 +12,27 @@ const api = axios.create({
   },
 });
 
-api.interceptors.request.use(async config => {
-  if (config.url && config.url.includes('/auth')) return config;
+api.interceptors.request.use(
+  async config => {
+    if (config.url && config.url.includes('/auth')) return config;
 
-  const token = await AsyncStorage.getItem('access_token');
+    const token = await AsyncStorage.getItem('access_token');
+    if (token) config.headers['Authorization'] = `Bearer ${token}`;
 
-  if (token) config.headers['Authorization'] = `Bearer ${token}`;
-
-  return config;
-});
+    return config;
+  },
+  error => {
+    console.error('Request Interceptor Error:', error);
+    return Promise.reject(error);
+  },
+);
 
 api.interceptors.response.use(
-  response => response,
+  response => {
+    return response;
+  },
   async error => {
+    console.error('Response Error:', error);
     if (error.response && error.response.status === 401) {
       await AsyncStorage.removeItem('access_token');
       await AsyncStorage.removeItem('id');
@@ -61,7 +69,6 @@ class Users {
   register = async (data: TRegisterUser) => await api.post(ApiUrls.users.register, data);
 
   login = async (data: TLoginUser) => {
-    console.warn(baseURL);
     const response = await api.post(ApiUrls.users.login, data);
     const { access_token, id } = response.data;
 

@@ -1,5 +1,5 @@
 import { useLocalSearchParams, useNavigation } from 'expo-router';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import useChatsApi from '../../hooks/Api/useChatsApi';
 import useUserApi from '../../hooks/Api/useUserApi';

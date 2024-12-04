@@ -2,9 +2,9 @@ import { FlatList, StyleSheet, View } from 'react-native';
 import { useAuth } from '../../contexts/AuthContext';
 import { IMessage } from '../../types/messagesTypes';
 
+import { useEffect, useRef } from 'react';
 import { useColors } from '../../hooks/useColors';
 import { ThemedText } from '../ThemedText';
-import { useEffect, useRef } from 'react';
 
 type Props = {
   msgs: IMessage[];
@@ -24,7 +24,7 @@ const MessagesList = ({ msgs }: Props) => {
 
   const renderMsg = (msg: IMessage) => {
     const isSender = msg.senderId === user?.id;
-    const backgroundColor = isSender ? colors.primary : colors.background.secondary;
+    const backgroundColor = isSender ? colors.background.tertiary : colors.background.secondary;
     const alignSelf = isSender ? 'flex-end' : 'flex-start';
 
     const time = new Date(msg.createdAt).toLocaleString(undefined, {
@@ -66,12 +66,14 @@ const styles = StyleSheet.create({
   container: { width: '100%', padding: 8 },
   msgs: {
     gap: 8,
+    paddingTop: 8,
   },
   msg: {
     paddingVertical: 4,
     paddingHorizontal: 8,
     borderRadius: 8,
     borderEndEndRadius: 0,
+    color: 'white',
   },
   msgFooter: {
     flexDirection: 'row',
