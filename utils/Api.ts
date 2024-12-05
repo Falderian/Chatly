@@ -54,6 +54,7 @@ class ApiUrls {
   static chatsRoot = 'conversations/';
   static chats = {
     user: this.chatsRoot + 'user/',
+    messages: this.chatsRoot + 'messages/',
   };
 
   static contactsRoot = 'contacts/';
@@ -116,6 +117,9 @@ class Contacts {
 class Messages {
   create = async (conversationId: number, content: string) =>
     (await api.post(ApiUrls.messagesRoot, { conversationId, content })).data;
+
+  getMsgs = async (chatId: number, page = 0) =>
+    (await api.get(ApiUrls.chats.messages + chatId, { params: { page } })).data;
 }
 
 export default class Api {

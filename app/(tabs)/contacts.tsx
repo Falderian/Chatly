@@ -1,17 +1,17 @@
 import { FlatList, StyleSheet, View } from 'react-native';
-import { ThemedView } from '../../components/ThemedView';
-import Search from '../../components/Search';
-import useUserApi from '../../hooks/Api/useUserApi';
-import { ThemedText } from '../../components/ThemedText';
 import UserAvatar from '../../components/Avatar';
+import Search from '../../components/Search';
+import { ThemedText } from '../../components/ThemedText';
+import { ThemedView } from '../../components/ThemedView';
+import useUserApi from '../../hooks/Api/useUserApi';
 
+import { useMutation } from '@tanstack/react-query';
 import { Link } from 'expo-router';
-import { TUser } from '../../types/userTypes';
-import { useColors } from '../../hooks/useColors';
-import useContactsApi from '../../hooks/Api/useContactsApi';
 import { useCallback, useEffect, useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
-import { useMutation } from '@tanstack/react-query';
+import useContactsApi from '../../hooks/Api/useContactsApi';
+import { useColors } from '../../hooks/useColors';
+import { TUser } from '../../types/userTypes';
 
 const ContactsScreen = () => {
   const { user } = useAuth();
@@ -80,6 +80,8 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
   },
   userTexts: {
+    height: '100%',
+    justifyContent: 'center',
     paddingLeft: 8,
   },
 });

@@ -8,19 +8,20 @@ import { ThemedText } from '../ThemedText';
 
 type Props = {
   msgs: IMessage[];
+  fetchMoreMsgs: () => void;
 };
 
-const MessagesList = ({ msgs }: Props) => {
+const MessagesList = ({ msgs, fetchMoreMsgs }: Props) => {
   const { user } = useAuth();
   const colors = useColors();
 
   const flatListRef = useRef<FlatList<IMessage>>(null);
 
   useEffect(() => {
-    if (msgs.length > 0) {
+    if (msgs.length) {
       flatListRef.current?.scrollToIndex({ index: 0, animated: true });
     }
-  }, [msgs]);
+  }, []);
 
   const renderMsg = (msg: IMessage) => {
     const isSender = msg.senderId === user?.id;
@@ -43,7 +44,7 @@ const MessagesList = ({ msgs }: Props) => {
         </View>
         <View style={styles.msgFooter}>
           <ThemedText style={{ fontSize: 12 }}>{time}</ThemedText>
-          <ThemedText style={{ fontSize: 12 }}>&#128900;</ThemedText>
+          <ThemedText style={{ fontSize: 12 }}>|</ThemedText>
           <ThemedText style={{ fontSize: 12 }}>{msg.isRead ? 'Read' : 'Unread'}</ThemedText>
         </View>
       </View>
@@ -54,16 +55,18 @@ const MessagesList = ({ msgs }: Props) => {
     <FlatList
       ref={flatListRef}
       data={msgs}
+      keyExtractor={item => item.id.toString()}
       renderItem={({ item }) => renderMsg(item)}
-      style={styles.container}
+      onEndReached={fetchMoreMsgs}
       contentContainerStyle={styles.msgs}
       inverted
+      style={styles.container}
     />
   );
 };
 
 const styles = StyleSheet.create({
-  container: { width: '100%', padding: 8 },
+  container: { width: '100%', paddingHorizontal: 8 },
   msgs: {
     gap: 8,
     paddingTop: 8,
@@ -78,6 +81,7 @@ const styles = StyleSheet.create({
   msgFooter: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'flex-end',
     gap: 4,
   },
 });

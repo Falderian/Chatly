@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
-import Api from '../../utils/Api';
 import { AxiosError } from 'axios';
+import Api from '../../utils/Api';
 
 const useChatsApi = () => {
   const getUserChats = useMutation({

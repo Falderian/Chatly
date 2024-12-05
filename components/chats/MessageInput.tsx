@@ -1,11 +1,11 @@
 import { FieldValues, useForm } from 'react-hook-form';
-import { ThemedTextInput } from '../ThemedTextInput';
 import { StyleSheet, View } from 'react-native';
-import Icon from '../Icon';
 import useMessagesApi from '../../hooks/Api/useMessagesApi';
+import Icon from '../Icon';
+import { ThemedTextInput } from '../ThemedTextInput';
 
-import Spinner from '../Spinner';
 import { IMessage } from '../../types/messagesTypes';
+import Spinner from '../Spinner';
 type Props = {
   chatId: number;
   updateMessages: (msg: IMessage) => void;
@@ -30,9 +30,9 @@ const MessageInput = ({ chatId, updateMessages }: Props) => {
     });
 
   return (
-    <View style={styles.contaier}>
+    <View style={styles.container}>
       <Icon name='attach' size={32} />
-      <View style={{ flex: 1 }}>
+      <View style={{ width: '75%', alignItems: 'center' }}>
         <ThemedTextInput<IForm> name='content' control={control} />
       </View>
       <View>{sendMsg.isPending ? <Spinner /> : <Icon name='send' size={30} onPress={handleSubmit(submit)} />}</View>
@@ -41,7 +41,12 @@ const MessageInput = ({ chatId, updateMessages }: Props) => {
 };
 
 const styles = StyleSheet.create({
-  contaier: { flexDirection: 'row', paddingHorizontal: 8, gap: 8, width: '100%' },
+  container: {
+    gap: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });
 
 export default MessageInput;

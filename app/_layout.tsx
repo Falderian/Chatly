@@ -40,7 +40,6 @@ export default function RootLayout() {
             headerShadowVisible: false,
           }}
         >
-          {' '}
           <Stack.Screen
             name='login/index'
             options={{

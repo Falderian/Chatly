@@ -3,7 +3,6 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import useUserApi from '../hooks/Api/useUserApi';
 import { TUser } from '../types/userTypes';
 import Storage from '../utils/Storage';
-import { initSocket } from '../utils/socket';
 
 type AuthContextType = {
   user: TUser | null;
@@ -40,7 +39,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         return;
       }
 
-      initSocket(token);
+      // initSocket(token);
 
       if (!user) {
         const storedUser = await Storage.getItem('user');

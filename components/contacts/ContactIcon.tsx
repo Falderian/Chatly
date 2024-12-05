@@ -1,7 +1,7 @@
-import { memo, useEffect, useMemo, useRef } from 'react';
-import IconButton from '../IconButton';
+import { memo, useEffect, useRef } from 'react';
+
 import useContactsApi from '../../hooks/Api/useContactsApi';
-import Spinner from '../Spinner';
+import IconButton from '../IconButton';
 
 interface ContactIconProps {
   userId: number;
@@ -10,7 +10,7 @@ interface ContactIconProps {
 
 const ContactIcon: React.FC<ContactIconProps> = memo(({ userId, profileId }) => {
   const { createContact, deleteUserContact, isUserContact } = useContactsApi();
-  const isContact = useRef();
+  const isContact = useRef(null);
 
   useEffect(() => {
     isUserContact.mutateAsync({ userId, contactId: +profileId }).then(res => (isContact.current = res));
@@ -31,7 +31,13 @@ const ContactIcon: React.FC<ContactIconProps> = memo(({ userId, profileId }) => 
       };
 
   return (
-    <IconButton key={icon.name} name={icon.name} size={30} onPress={icon.onPress} loading={icon.loading || false} />
+    <IconButton
+      key={icon.name}
+      name={icon.name}
+      size={30}
+      onPress={icon.onPress}
+      loading={isContact.current === null || icon.loading}
+    />
   );
 });
 

@@ -1,4 +1,5 @@
-import { Link, useRouter } from 'expo-router';
+import { useQueryClient } from '@tanstack/react-query';
+import { Link, useFocusEffect, useRouter } from 'expo-router';
 import { useCallback, useEffect } from 'react';
 import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useAuth } from '../../contexts/AuthContext';
@@ -12,13 +13,25 @@ import { ThemedView } from '../ThemedView';
 import { UnreadIcon } from '../UnreadIcon';
 
 const ChatsList = () => {
+  const { push } = useRouter();
   const { user } = useAuth();
   const { getUserChats } = useChatsApi();
-  const { push } = useRouter();
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     if (user?.id) getUserChats.mutate(user.id);
   }, [user]);
+
+  useFocusEffect(
+    useCallback(() => {
+      if (user?.id) {
+        getUserChats.mutate(user.id);
+      }
+      return async () => {
+        await queryClient.setQueryData(['userChats', user?.id], []);
+      };
+    }, [user]),
+  );
 
   const goToChat = useCallback(
     (chatId: number, recieverId: number) => push({ pathname: '/chat', params: { id: chatId, recieverId } }),
@@ -37,7 +50,9 @@ const ChatsList = () => {
           <ThemedText type='subtitle'>
             {participant.firstName} {participant.lastName}
           </ThemedText>
-          <ThemedText>{lastMessage.content}</ThemedText>
+          <ThemedText numberOfLines={2} ellipsizeMode='tail'>
+            {lastMessage.content}
+          </ThemedText>
         </TouchableOpacity>
         <View style={styles.chatMeta}>
           <ThemedText>{formatDate(lastMessage.createdAt)}</ThemedText>
@@ -71,9 +86,9 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   chat: {
-    flexDirection: 'row',
-    width: '100%',
     gap: 8,
+    width: '100%',
+    flexDirection: 'row',
     alignItems: 'center',
   },
   chatDetails: {

@@ -1,7 +1,8 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { useLocalSearchParams, useNavigation } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { StyleSheet, View } from 'react-native';
-import useChatsApi from '../../hooks/Api/useChatsApi';
+import useMessagesApi from '../../hooks/Api/useMessagesApi';
 import useUserApi from '../../hooks/Api/useUserApi';
 import { IMessage } from '../../types/messagesTypes';
 import Loader from '../Loader';
@@ -10,46 +11,58 @@ import { ThemedText } from '../ThemedText';
 import { ThemedView } from '../ThemedView';
 import MessageInput from './MessageInput';
 
+import { useState } from 'react';
+
 const Chat = () => {
   const { id, recieverId } = useLocalSearchParams();
+  const queryClient = useQueryClient();
   const { getUser } = useUserApi();
-  const { getChatById } = useChatsApi();
+  const { getMsgs, hasMore } = useMessagesApi();
   const navigation = useNavigation();
 
-  const [msgs, setMsgs] = useState<IMessage[] | null>(null);
+  const [cachedMessages, setCachedMessages] = useState<IMessage[]>([]);
+  const page = useRef(0);
 
   useEffect(() => {
-    getChatById.mutateAsync(+id).then(res => setMsgs(res.messages));
+    getMsgs.mutateAsync({ id: +id, page: page.current }).then(data => {
+      setCachedMessages(data || []);
+    });
     getUser.mutateAsync(recieverId.toString()).then(user =>
       navigation.setOptions({
         title: user.firstName + ' ' + user.lastName,
       }),
     );
+    return () => {
+      queryClient.removeQueries();
+    };
   }, []);
 
-  const updateMessages = (msg: IMessage) =>
-    setMsgs(p => {
-      const temp = [...p!];
-      temp.unshift(msg);
-      return temp;
+  const fetchMoreMsgs = () => {
+    if (!hasMore) return;
+    ++page.current;
+    getMsgs.mutateAsync({ id: +id, page: page.current }).then(data => {
+      setCachedMessages(prev => [...prev, ...(data || [])]);
     });
+  };
 
-  if (!msgs) return <Loader loading={true} />;
+  const updateMessages = (newMsg: IMessage) => {
+    setCachedMessages(prev => [newMsg, ...prev]);
+    queryClient.setQueryData<IMessage[]>(['messages', +id], oldMsgs => [...(oldMsgs || []), newMsg]);
+  };
 
+  if (!cachedMessages.length && getMsgs.isPending) return <Loader loading={true} />;
   return (
     <ThemedView style={styles.container}>
       <View style={styles.msgsContainer}>
-        <Loader loading={getChatById.isPending}>
-          {msgs.length ? (
-            <MessagesList msgs={msgs} />
-          ) : (
-            <ThemedText style={{ padding: 8 }}>
-              No messages in this chat. Send message to begin the conversation.
-            </ThemedText>
-          )}
-        </Loader>
+        {cachedMessages.length ? (
+          <MessagesList msgs={cachedMessages} fetchMoreMsgs={fetchMoreMsgs} />
+        ) : (
+          <ThemedText style={{ padding: 8 }}>
+            No messages in this chat. Send message to begin the conversation.
+          </ThemedText>
+        )}
       </View>
-      <MessageInput chatId={getChatById.data?.id} updateMessages={updateMessages} />
+      <MessageInput chatId={+id} updateMessages={updateMessages} />
     </ThemedView>
   );
 };

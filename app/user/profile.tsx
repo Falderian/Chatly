@@ -1,17 +1,15 @@
 import { router, useLocalSearchParams } from 'expo-router';
-import { useEffect, useMemo } from 'react';
-import { View } from 'react-native';
+import React, { useEffect, useMemo } from 'react';
+import { StyleSheet, View } from 'react-native';
 import UserAvatar from '../../components/Avatar';
+import ContactIcon from '../../components/contacts/ContactIcon';
+import IconButton from '../../components/IconButton';
 import Loader from '../../components/Loader';
 import { ThemedText } from '../../components/ThemedText';
 import { ThemedView } from '../../components/ThemedView';
-import useUserApi from '../../hooks/Api/useUserApi';
-import { StyleSheet } from 'react-native';
-import IconButton from '../../components/IconButton';
 import { useAuth } from '../../contexts/AuthContext';
-import React from 'react';
-import ContactIcon from '../../components/contacts/ContactIcon';
 import useChatsApi from '../../hooks/Api/useChatsApi';
+import useUserApi from '../../hooks/Api/useUserApi';
 
 const UserProfile: React.FC = () => {
   const { user } = useAuth();
