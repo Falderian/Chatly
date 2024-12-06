@@ -20,8 +20,12 @@ export default function TabLayout() {
         tabBarStyle: {
           borderTopColor: colors.background.primary,
           borderTopWidth: 1,
+          height: 60,
         },
-        tabBarLabelStyle: { fontSize: 14, color: colors.text.default },
+        tabBarLabelStyle: {
+          fontSize: 14,
+          color: colors.text.default,
+        },
       }}
       backBehavior='history'
     >

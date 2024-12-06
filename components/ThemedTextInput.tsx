@@ -4,12 +4,14 @@ import { StyleSheet, TextInput, View, type TextInputProps } from 'react-native';
 import { useColors } from '../hooks/useColors';
 import { ThemedText } from './ThemedText';
 
-type Props<TFieldValues extends FieldValues> = UseControllerProps<TFieldValues> & TextInputProps;
+type Props<TFieldValues extends FieldValues> = UseControllerProps<TFieldValues> &
+  TextInputProps & { showError?: boolean };
 
 export const ThemedTextInput = <TFieldValues extends FieldValues>({
   control,
   name,
   rules,
+  showError = true,
   ...otherProps
 }: Props<TFieldValues>) => {
   const colors = useColors();
@@ -35,9 +37,11 @@ export const ThemedTextInput = <TFieldValues extends FieldValues>({
               ]}
             />
 
-            <ThemedText darkColor={colors.danger} lightColor={colors.danger} style={{ height: 10 }}>
-              {errors[name]?.message?.toString()}
-            </ThemedText>
+            {showError && (
+              <ThemedText darkColor={colors.danger} lightColor={colors.danger} style={{ height: 20 }}>
+                {errors[name]?.message?.toString()}
+              </ThemedText>
+            )}
           </>
         )}
       />

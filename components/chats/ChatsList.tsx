@@ -4,6 +4,7 @@ import { useCallback, useEffect } from 'react';
 import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useAuth } from '../../contexts/AuthContext';
 import useChatsApi from '../../hooks/Api/useChatsApi';
+import { useColors } from '../../hooks/useColors';
 import { IChatWithParticipant } from '../../types/chatTypes';
 import { formatDate } from '../../utils/utils';
 import UserAvatar from '../Avatar';
@@ -17,6 +18,7 @@ const ChatsList = () => {
   const { user } = useAuth();
   const { getUserChats } = useChatsApi();
   const queryClient = useQueryClient();
+  const borderColor = useColors().background.secondary;
 
   useEffect(() => {
     if (user?.id) getUserChats.mutate(user.id);
@@ -42,7 +44,7 @@ const ChatsList = () => {
     const { participant, lastMessage } = chat;
 
     return (
-      <View style={styles.chat}>
+      <View style={[styles.chat, { borderColor }]}>
         <Link key={participant.id} href={`/user/profile?id=${participant.id}`}>
           <UserAvatar size={80} />
         </Link>
@@ -65,12 +67,16 @@ const ChatsList = () => {
   return (
     <ThemedView style={styles.container}>
       <Loader loading={getUserChats.isPending}>
-        <FlatList
-          data={getUserChats.data}
-          renderItem={({ item }) => renderChat(item)}
-          style={styles.container}
-          contentContainerStyle={styles.chats}
-        />
+        {getUserChats.data ? (
+          <FlatList
+            data={getUserChats.data}
+            renderItem={({ item }) => renderChat(item)}
+            style={styles.container}
+            contentContainerStyle={styles.chats}
+          />
+        ) : (
+          <ThemedText>No chats were found</ThemedText>
+        )}
       </Loader>
     </ThemedView>
   );
@@ -79,17 +85,17 @@ const ChatsList = () => {
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    paddingVertical: 8,
+    paddingTop: 2,
   },
   chats: {
     gap: 8,
-    width: '100%',
   },
   chat: {
     gap: 8,
-    width: '100%',
+    paddingVertical: 8,
     flexDirection: 'row',
     alignItems: 'center',
+    borderBottomWidth: 2,
   },
   chatDetails: {
     flex: 1,

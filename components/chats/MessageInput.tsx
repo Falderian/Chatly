@@ -33,7 +33,7 @@ const MessageInput = ({ chatId, updateMessages }: Props) => {
     <View style={styles.container}>
       <Icon name='attach' size={32} />
       <View style={{ width: '75%', alignItems: 'center' }}>
-        <ThemedTextInput<IForm> name='content' control={control} />
+        <ThemedTextInput<IForm> name='content' control={control} showError={false} />
       </View>
       <View>{sendMsg.isPending ? <Spinner /> : <Icon name='send' size={30} onPress={handleSubmit(submit)} />}</View>
     </View>

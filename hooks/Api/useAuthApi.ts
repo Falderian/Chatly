@@ -16,7 +16,6 @@ const useAuthApi = () => {
     mutationFn: Api.users.register,
     onSuccess: (_, variables) => {
       Alert.alert('Success', 'Registration successful');
-      console.log('Registration successful, logging in now');
 
       loginMutation.mutate({ username: variables.username, password: variables.password });
     },
