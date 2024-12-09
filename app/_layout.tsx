@@ -4,6 +4,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
 
+import { NavigationContainer } from '@react-navigation/native';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ActivityIndicator } from 'react-native';
 import { AuthProvider } from '../contexts/AuthContext';
@@ -31,42 +32,47 @@ export default function RootLayout() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <Stack
-          screenOptions={{
-            headerShown: true,
-            headerStyle: { backgroundColor: colors.background.secondary },
-            headerTintColor: colors.text.default,
-            headerBackVisible: true,
-            headerShadowVisible: false,
-          }}
-        >
-          <Stack.Screen
-            name='login/index'
-            options={{
-              headerShown: false,
-            }}
-          />
-          <Stack.Screen
-            name='register/index'
-            options={{
-              headerShown: false,
-            }}
-          />
-          <Stack.Screen name='(tabs)' options={{ headerShown: false }} />
-          <Stack.Screen
-            name='chat/index'
-            options={{
+        <NavigationContainer>
+          <Stack
+            screenOptions={{
               headerShown: true,
+              headerStyle: { backgroundColor: colors.background.secondary },
+              headerTintColor: colors.text.default,
+              headerBackVisible: true,
+              statusBarStyle: 'dark',
+              statusBarBackgroundColor: colors.background.secondary,
+              navigationBarColor: colors.background.secondary,
             }}
-          />
-          <Stack.Screen
-            name='user/profile'
-            options={{
-              headerShown: true,
-              headerTitle: 'User',
-            }}
-          />
-        </Stack>
+          >
+            <Stack.Screen
+              name='login/index'
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name='register/index'
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen name='(tabs)' options={{ headerShown: false }} />
+            <Stack.Screen
+              name='chat/index'
+              options={{
+                headerShown: true,
+                title: '',
+              }}
+            />
+            <Stack.Screen
+              name='user/profile'
+              options={{
+                headerShown: true,
+                headerTitle: 'User',
+              }}
+            />
+          </Stack>
+        </NavigationContainer>
       </AuthProvider>
     </QueryClientProvider>
   );

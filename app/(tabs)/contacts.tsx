@@ -7,7 +7,7 @@ import useUserApi from '../../hooks/Api/useUserApi';
 
 import { useMutation } from '@tanstack/react-query';
 import { Link } from 'expo-router';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import useContactsApi from '../../hooks/Api/useContactsApi';
 import { useColors } from '../../hooks/useColors';
@@ -17,15 +17,15 @@ const ContactsScreen = () => {
   const { user } = useAuth();
   const { searchUsers } = useUserApi();
   const { findUserContacts } = useContactsApi();
-
   const borderColor = useColors().background.secondary;
 
   const [hasSearched, setHasSearched] = useState(false);
+  const page = useRef(0);
 
   const searchUsersMutation = useMutation({
-    mutationFn: (text: string) => {
-      setHasSearched(!!text);
-      return searchUsers.mutateAsync(text);
+    mutationFn: (query: string) => {
+      setHasSearched(!!query);
+      return searchUsers.mutateAsync({ query, page: page.current });
     },
   });
 
@@ -39,7 +39,7 @@ const ContactsScreen = () => {
     ({ item }: { item: TUser }) => {
       return (
         <Link key={item.id} href={`/user/profile?id=${item.id}`} style={[styles.userProfile, { borderColor }]}>
-          <UserAvatar size={80} />
+          <UserAvatar />
           <View style={styles.userTexts}>
             <ThemedText type='subtitle'>
               {item.firstName} {item.lastName}

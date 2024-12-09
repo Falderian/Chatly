@@ -30,14 +30,16 @@ const UserProfile: React.FC = () => {
           .then(res => router.push({ pathname: '/chat', params: { id: res.id, recieverId: profileId } }));
       },
     }),
-    [user],
+    [user, profileId],
   );
+
+  const Avatar = useMemo(() => <UserAvatar size={150} />, [profileId]);
 
   return (
     <Loader loading={getUser.isPending}>
       {getUser.data && (
         <ThemedView style={styles.container}>
-          <UserAvatar size={150} />
+          {Avatar}
           <View style={styles.profile}>
             <ThemedText type='title'>
               {getUser.data.firstName} {getUser.data.lastName}
@@ -47,6 +49,7 @@ const UserProfile: React.FC = () => {
           </View>
           <View style={styles.icons}>
             <ContactIcon userId={user?.id!} profileId={profileId} />
+
             <IconButton
               key={chatIcon.name}
               name={chatIcon.name}

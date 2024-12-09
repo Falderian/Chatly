@@ -83,9 +83,9 @@ class Users {
 
   find = async (id: string) => (await api.get<TUser>(ApiUrls.usersRoot + id)).data;
 
-  search = async (username: string) => {
+  search = async (query: string, page: number) => {
     const response = await api.get<TUser[]>(ApiUrls.users.search, {
-      params: { query: username },
+      params: { query, page },
     });
 
     return response.data;
@@ -95,7 +95,7 @@ class Users {
 class Chats {
   getChatById = async (id: number) => (await api.get(ApiUrls.chatsRoot + id)).data;
 
-  getUserChats = async (id: number) => (await api.get(ApiUrls.chats.user + id)).data;
+  getUserChats = async (id: number, page = 0) => (await api.get(ApiUrls.chats.user + id, { params: { page } })).data;
 
   create = async (senderId: number, receiverId: number) =>
     (await api.post(ApiUrls.chatsRoot, { senderId, receiverId })).data;

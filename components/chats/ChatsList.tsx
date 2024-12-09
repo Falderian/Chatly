@@ -1,6 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { Link, useFocusEffect, useRouter } from 'expo-router';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useAuth } from '../../contexts/AuthContext';
 import useChatsApi from '../../hooks/Api/useChatsApi';
@@ -20,14 +20,16 @@ const ChatsList = () => {
   const queryClient = useQueryClient();
   const borderColor = useColors().background.secondary;
 
+  const page = useRef(0).current;
+
   useEffect(() => {
-    if (user?.id) getUserChats.mutate(user.id);
+    if (user?.id) getUserChats.mutate({ id: user.id, page });
   }, [user]);
 
   useFocusEffect(
     useCallback(() => {
       if (user?.id) {
-        getUserChats.mutate(user.id);
+        getUserChats.mutate({ id: user.id, page });
       }
       return async () => {
         await queryClient.setQueryData(['userChats', user?.id], []);
@@ -46,20 +48,22 @@ const ChatsList = () => {
     return (
       <View style={[styles.chat, { borderColor }]}>
         <Link key={participant.id} href={`/user/profile?id=${participant.id}`}>
-          <UserAvatar size={80} />
+          <UserAvatar />
         </Link>
         <TouchableOpacity onPress={() => goToChat(chat.id, participant.id)} style={styles.chatDetails}>
-          <ThemedText type='subtitle'>
-            {participant.firstName} {participant.lastName}
-          </ThemedText>
-          <ThemedText numberOfLines={2} ellipsizeMode='tail'>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', gap: 2 }}>
+            <ThemedText type='subtitle' style={{ flex: 1 }} numberOfLines={1} ellipsizeMode='tail'>
+              {participant.firstName} {participant.lastName}
+            </ThemedText>
+            <View style={styles.chatMeta}>
+              <UnreadIcon isRead={lastMessage.isRead} />
+              <ThemedText style={{ fontSize: 14 }}>{formatDate(lastMessage.createdAt)}</ThemedText>
+            </View>
+          </View>
+          <ThemedText numberOfLines={1} ellipsizeMode='tail'>
             {lastMessage.content}
           </ThemedText>
         </TouchableOpacity>
-        <View style={styles.chatMeta}>
-          <ThemedText>{formatDate(lastMessage.createdAt)}</ThemedText>
-          <UnreadIcon isRead={lastMessage.isRead} />
-        </View>
       </View>
     );
   };
@@ -68,12 +72,7 @@ const ChatsList = () => {
     <ThemedView style={styles.container}>
       <Loader loading={getUserChats.isPending}>
         {getUserChats.data ? (
-          <FlatList
-            data={getUserChats.data}
-            renderItem={({ item }) => renderChat(item)}
-            style={styles.container}
-            contentContainerStyle={styles.chats}
-          />
+          <FlatList data={getUserChats.data} renderItem={({ item }) => renderChat(item)} style={styles.container} />
         ) : (
           <ThemedText>No chats were found</ThemedText>
         )}
@@ -83,13 +82,8 @@ const ChatsList = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    width: '100%',
-    paddingTop: 2,
-  },
-  chats: {
-    gap: 8,
-  },
+  container: { flex: 1, paddingTop: 2, width: '100%' },
+
   chat: {
     gap: 8,
     paddingVertical: 8,
@@ -97,12 +91,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderBottomWidth: 2,
   },
-  chatDetails: {
-    flex: 1,
-  },
-  chatMeta: {
-    alignItems: 'flex-end',
-  },
+  chatDetails: { flexDirection: 'column', flex: 1 },
+  chatMeta: { alignItems: 'center', flexDirection: 'row', gap: 2 },
 });
 
 export default ChatsList;

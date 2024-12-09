@@ -18,16 +18,17 @@ export default function TabLayout() {
           borderBottomColor: colors.background.primary,
         },
         tabBarStyle: {
-          borderTopColor: colors.background.primary,
-          borderTopWidth: 1,
           height: 60,
+          borderTopWidth: 0,
+          borderBottomWidth: 2,
+          borderColor: colors.background.primary,
         },
         tabBarLabelStyle: {
           fontSize: 14,
           color: colors.text.default,
         },
       }}
-      backBehavior='history'
+      backBehavior='order'
     >
       <Tabs.Screen
         name='index'

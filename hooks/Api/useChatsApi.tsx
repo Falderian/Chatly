@@ -4,7 +4,7 @@ import Api from '../../utils/Api';
 
 const useChatsApi = () => {
   const getUserChats = useMutation({
-    mutationFn: Api.chats.getUserChats,
+    mutationFn: ({ id, page }: { id: number; page: number }) => Api.chats.getUserChats(id, page),
   });
 
   const getOrCreateChat = useMutation({

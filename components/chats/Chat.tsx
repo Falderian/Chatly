@@ -1,5 +1,5 @@
 import { useQueryClient } from '@tanstack/react-query';
-import { useLocalSearchParams, useNavigation } from 'expo-router';
+import { Link, useLocalSearchParams, useNavigation } from 'expo-router';
 import { useEffect, useRef } from 'react';
 import { StyleSheet, View } from 'react-native';
 import useMessagesApi from '../../hooks/Api/useMessagesApi';
@@ -29,7 +29,13 @@ const Chat = () => {
     });
     getUser.mutateAsync(recieverId.toString()).then(user =>
       navigation.setOptions({
-        title: user.firstName + ' ' + user.lastName,
+        headerTitle: () => (
+          <Link href={`/user/profile?id=${recieverId}`}>
+            <ThemedText type='subtitle'>
+              {user.firstName} {user.lastName}
+            </ThemedText>
+          </Link>
+        ),
       }),
     );
     return () => {

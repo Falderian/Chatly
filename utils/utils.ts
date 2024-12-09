@@ -22,7 +22,7 @@ const formatDate = (dateString: string) => {
     return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   }
 
-  return date.toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' });
+  return date.toLocaleDateString([], { month: '2-digit', day: '2-digit', year: '2-digit' });
 };
 
 export { formatDate, getRandomColor };

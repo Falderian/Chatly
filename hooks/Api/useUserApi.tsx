@@ -8,8 +8,7 @@ const useUserApi = () => {
   });
 
   const searchUsers = useMutation({
-    mutationFn: Api.users.search,
-    onError: console.error,
+    mutationFn: ({ query, page }: { query: string; page: number }) => Api.users.search(query, page),
   });
 
   return {
