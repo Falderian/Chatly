@@ -28,6 +28,7 @@ const useMessagesApi = () => {
       }
     },
     onError: (e: AxiosError<any>) => {
+      console.warn(e);
       alert(e.response?.data.message);
     },
   });

@@ -1,7 +1,9 @@
 import { Link } from 'expo-router';
-import { FieldValues, useForm } from 'react-hook-form';
+import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
 import { FlatList, StyleSheet, View } from 'react-native';
-import useAuthApi from '../hooks/Api/useAuthApi';
+import { useSelector } from 'react-redux';
+import { useLoginMutation } from '../services/Api/authApi';
 import { TLoginUser } from '../types/userTypes';
 import CustomButton from './CustomButton';
 import { ThemedText } from './ThemedText';
@@ -9,17 +11,19 @@ import { ThemedTextInput } from './ThemedTextInput';
 import { ThemedView } from './ThemedView';
 
 export default function LoginForm() {
-  const { control, handleSubmit, setError } = useForm<FieldValues>({
+  const { control, handleSubmit, setError } = useForm<TLoginUser>({
     defaultValues: {
       email: 'Xavier_Tromp@yahoo.com',
       password: '5Gloria95',
     },
   });
-  const { loginMutation } = useAuthApi();
+
+  const [login, { isLoading }] = useLoginMutation();
+  const user = useSelector((state: any) => state.user.profile);
 
   const fields = [
     {
-      name: 'email',
+      name: 'email' as const,
       placeholder: 'Email',
       secureTextEntry: false,
       rules: {
@@ -27,7 +31,7 @@ export default function LoginForm() {
       },
     },
     {
-      name: 'password',
+      name: 'password' as const,
       placeholder: 'Password',
       secureTextEntry: true,
       rules: {
@@ -46,11 +50,13 @@ export default function LoginForm() {
     />
   );
 
-  const submit = (data: FieldValues) => {
-    loginMutation
-      .mutateAsync(data as TLoginUser)
-      .catch(e => setError('email', { type: 'manual', message: e.response.data.message }));
+  const submit = (data: TLoginUser) => {
+    login(data).catch(e => setError('email', { type: 'manual', message: e.response.data.message }));
   };
+
+  useEffect(() => {
+    console.log(user);
+  }, [user]);
 
   return (
     <ThemedView style={styles.container}>
@@ -64,12 +70,7 @@ export default function LoginForm() {
           keyExtractor={item => item.name}
           contentContainerStyle={styles.list}
         />
-        <CustomButton
-          title='Login'
-          onPress={handleSubmit(submit)}
-          disabled={loginMutation.isPending}
-          loading={loginMutation.isPending}
-        />
+        <CustomButton title='Login' onPress={handleSubmit(submit)} disabled={isLoading} loading={isLoading} />
       </View>
       <View style={styles.linkContainer}>
         <ThemedText type='default'>Not having an account?</ThemedText>

@@ -3,14 +3,14 @@ import UserAvatar from '../../components/Avatar';
 import Search from '../../components/Search';
 import { ThemedText } from '../../components/ThemedText';
 import { ThemedView } from '../../components/ThemedView';
-import useUserApi from '../../hooks/Api/useUserApi';
+import useUserApi from '../../services/Api/useUserApi';
 
 import { useMutation } from '@tanstack/react-query';
 import { Link } from 'expo-router';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useAuth } from '../../contexts/AuthContext';
-import useContactsApi from '../../hooks/Api/useContactsApi';
 import { useColors } from '../../hooks/useColors';
+import useContactsApi from '../../services/Api/useContactsApi';
+
 import { TUser } from '../../types/userTypes';
 
 const ContactsScreen = () => {
@@ -87,3 +87,6 @@ const styles = StyleSheet.create({
 });
 
 export default ContactsScreen;
+function useAuth(): { user: any } {
+  throw new Error('Function not implemented.');
+}

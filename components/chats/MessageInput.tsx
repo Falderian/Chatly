@@ -1,6 +1,6 @@
 import { FieldValues, useForm } from 'react-hook-form';
 import { StyleSheet, View } from 'react-native';
-import useMessagesApi from '../../hooks/Api/useMessagesApi';
+import useMessagesApi from '../../services/Api/useMessagesApi';
 import Icon from '../Icon';
 import { ThemedTextInput } from '../ThemedTextInput';
 

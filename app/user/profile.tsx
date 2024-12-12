@@ -7,9 +7,9 @@ import IconButton from '../../components/IconButton';
 import Loader from '../../components/Loader';
 import { ThemedText } from '../../components/ThemedText';
 import { ThemedView } from '../../components/ThemedView';
-import { useAuth } from '../../contexts/AuthContext';
-import useChatsApi from '../../hooks/Api/useChatsApi';
-import useUserApi from '../../hooks/Api/useUserApi';
+import useChatsApi from '../../services/Api/useChatsApi';
+import useUserApi from '../../services/Api/useUserApi';
+import { useAuth } from '../../slices/AuthContext';
 
 const UserProfile: React.FC = () => {
   const { user } = useAuth();

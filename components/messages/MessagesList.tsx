@@ -1,5 +1,5 @@
 import { FlatList, StyleSheet, View } from 'react-native';
-import { useAuth } from '../../contexts/AuthContext';
+import { useAuth } from '../../slices/AuthContext';
 import { IMessage } from '../../types/messagesTypes';
 
 import { useEffect, useRef } from 'react';

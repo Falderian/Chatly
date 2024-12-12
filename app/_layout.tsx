@@ -7,8 +7,10 @@ import 'react-native-reanimated';
 import { NavigationContainer } from '@react-navigation/native';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ActivityIndicator } from 'react-native';
-import { AuthProvider } from '../contexts/AuthContext';
+import { Provider } from 'react-redux';
 import { useColors } from '../hooks/useColors';
+import { AuthProvider } from '../services/AuthContext';
+import store from '../services/store';
 
 const queryClient = new QueryClient();
 
@@ -31,49 +33,51 @@ export default function RootLayout() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <NavigationContainer>
-          <Stack
-            screenOptions={{
-              headerShown: true,
-              headerStyle: { backgroundColor: colors.background.secondary },
-              headerTintColor: colors.text.default,
-              headerBackVisible: true,
-              statusBarStyle: 'dark',
-              statusBarBackgroundColor: colors.background.secondary,
-              navigationBarColor: colors.background.secondary,
-            }}
-          >
-            <Stack.Screen
-              name='login/index'
-              options={{
-                headerShown: false,
-              }}
-            />
-            <Stack.Screen
-              name='register/index'
-              options={{
-                headerShown: false,
-              }}
-            />
-            <Stack.Screen name='(tabs)' options={{ headerShown: false }} />
-            <Stack.Screen
-              name='chat/index'
-              options={{
+      <Provider store={store}>
+        <AuthProvider>
+          <NavigationContainer>
+            <Stack
+              screenOptions={{
                 headerShown: true,
-                title: '',
+                headerStyle: { backgroundColor: colors.background.secondary },
+                headerTintColor: colors.text.default,
+                headerBackVisible: true,
+                statusBarStyle: 'dark',
+                statusBarBackgroundColor: colors.background.secondary,
+                navigationBarColor: colors.background.secondary,
               }}
-            />
-            <Stack.Screen
-              name='user/profile'
-              options={{
-                headerShown: true,
-                headerTitle: 'User',
-              }}
-            />
-          </Stack>
-        </NavigationContainer>
-      </AuthProvider>
+            >
+              <Stack.Screen
+                name='login/index'
+                options={{
+                  headerShown: false,
+                }}
+              />
+              <Stack.Screen
+                name='register/index'
+                options={{
+                  headerShown: false,
+                }}
+              />
+              <Stack.Screen name='(tabs)' options={{ headerShown: false }} />
+              <Stack.Screen
+                name='chat/index'
+                options={{
+                  headerShown: true,
+                  title: '',
+                }}
+              />
+              <Stack.Screen
+                name='user/profile'
+                options={{
+                  headerShown: true,
+                  headerTitle: 'User',
+                }}
+              />
+            </Stack>
+          </NavigationContainer>
+        </AuthProvider>
+      </Provider>
     </QueryClientProvider>
   );
 }

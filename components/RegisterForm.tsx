@@ -1,14 +1,15 @@
-import { StyleSheet, FlatList, View, Button } from 'react-native';
-import { ThemedText } from './ThemedText';
-import { ThemedView } from './ThemedView';
-import { useForm, FieldValues } from 'react-hook-form';
-import { ThemedTextInput } from './ThemedTextInput';
+import { FieldValues, useForm } from 'react-hook-form';
+import { Button, FlatList, StyleSheet, View } from 'react-native';
 import { TRegisterUser } from '../types/userTypes';
-import useAuthApi from '../hooks/Api/useAuthApi';
+import { ThemedText } from './ThemedText';
+import { ThemedTextInput } from './ThemedTextInput';
+import { ThemedView } from './ThemedView';
+
 import { Link } from 'expo-router';
+import { useRegisterMutation } from '../services/Api/authApi';
 
 export default function RegisterForm() {
-  const { registerMutation, loginMutation } = useAuthApi();
+  const [register, { isLoading }] = useRegisterMutation();
 
   const { control, handleSubmit, watch } = useForm<FieldValues>({
     defaultValues: {
@@ -59,7 +60,7 @@ export default function RegisterForm() {
     },
   ];
 
-  const submit = (data: FieldValues) => registerMutation.mutate(data as TRegisterUser);
+  const submit = (data: FieldValues) => register(data as TRegisterUser);
 
   const renderItem = ({ item }: { item: (typeof fields)[0] }) => (
     <ThemedTextInput
@@ -83,11 +84,7 @@ export default function RegisterForm() {
           keyExtractor={item => item.name}
           contentContainerStyle={styles.list}
         />
-        <Button
-          title='Register'
-          onPress={handleSubmit(submit)}
-          disabled={registerMutation.isPending || loginMutation.isPending}
-        />
+        <Button title='Register' onPress={handleSubmit(submit)} disabled={isLoading} />
         <View style={styles.linkContainer}>
           <ThemedText type='default'>Already having an account?</ThemedText>
           <Link href='/login' style={styles.link}>

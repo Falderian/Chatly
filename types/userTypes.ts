@@ -15,6 +15,6 @@ type TRegisterUser = Pick<TUser, 'username' | 'email'> & {
   confirmPassword: string;
 };
 
-type TLoginUser = Pick<TRegisterUser, 'username' | 'password'>;
+type TLoginUser = Pick<TRegisterUser, 'email' | 'password'>;
 
-export type { TRegisterUser, TLoginUser, TUser };
+export type { TLoginUser, TRegisterUser, TUser };

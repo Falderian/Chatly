@@ -1,6 +1,6 @@
 import { memo, useEffect, useRef } from 'react';
 
-import useContactsApi from '../../hooks/Api/useContactsApi';
+import useContactsApi from '../../services/Api/useContactsApi';
 import IconButton from '../IconButton';
 
 interface ContactIconProps {

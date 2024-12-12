@@ -2,9 +2,10 @@ import { useQueryClient } from '@tanstack/react-query';
 import { Link, useFocusEffect, useRouter } from 'expo-router';
 import { useCallback, useEffect, useRef } from 'react';
 import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { useAuth } from '../../contexts/AuthContext';
-import useChatsApi from '../../hooks/Api/useChatsApi';
 import { useColors } from '../../hooks/useColors';
+import useChatsApi from '../../services/Api/useChatsApi';
+
+import { useSelector } from 'react-redux';
 import { IChatWithParticipant } from '../../types/chatTypes';
 import { formatDate } from '../../utils/utils';
 import UserAvatar from '../Avatar';
@@ -15,7 +16,7 @@ import { UnreadIcon } from '../UnreadIcon';
 
 const ChatsList = () => {
   const { push } = useRouter();
-  const { user } = useAuth();
+  const { user } = useSelector(state => state.user.profile);
   const { getUserChats } = useChatsApi();
   const queryClient = useQueryClient();
   const borderColor = useColors().background.secondary;

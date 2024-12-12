@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 import ChatsList from '../../components/chats/ChatsList';
 import Search from '../../components/Search';
 import { ThemedView } from '../../components/ThemedView';
-import useUserApi from '../../hooks/Api/useUserApi';
+import useUserApi from '../../services/Api/useUserApi';
 
 const ChatsScreen = () => {
   const { searchUsers } = useUserApi();

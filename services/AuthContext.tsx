@@ -1,8 +1,8 @@
 import { useRouter } from 'expo-router';
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import useUserApi from '../hooks/Api/useUserApi';
 import { TUser } from '../types/userTypes';
 import Storage from '../utils/Storage';
+import useUserApi from './Api/useUserApi';
 
 type AuthContextType = {
   user: TUser | null;
@@ -34,6 +34,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const initializeAuth = async () => {
       const token = await Storage.getItem('access_token');
+
       if (!token) {
         router.push('/login');
         return;
